@@ -22,29 +22,31 @@ export default {
   input: 'src/js/index.js',
   output: [
     {
-      file: 'dist/js/script-build.js',
+      file: 'dist/assets/js/script.js',
       format: 'iife',
       name: moduleName,
       sourcemap: 'inline',
       banner
     },
     {
-      file: 'dist/js/script.js',
+      file: 'dist/assets/js/script.js',
       format: 'iife',
       name: moduleName,
       banner,
-      plugins: [terser({
-        output: {
-          comments: function (node, comment) {
-            var text = comment.value
-            var type = comment.type
-            if (type === 'comment2') {
-              // multiline comment
-              return /@preserve|@license|@cc_on/i.test(text)
+      plugins: [
+        terser({
+          output: {
+            comments: function (node, comment) {
+              var text = comment.value
+              var type = comment.type
+              if (type === 'comment2') {
+                // multiline comment
+                return /@preserve|@license|@cc_on/i.test(text)
+              }
             }
           }
-        }
-      })]
+        })
+      ]
     }
   ],
   external: [...Object.keys(pkg.devDependencies || {})], // 開発用モジュールは含めない

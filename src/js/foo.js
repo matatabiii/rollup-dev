@@ -1,8 +1,9 @@
-import answer from 'the-answer';
+import answer from 'the-answer'
 
 class Foo {
   constructor () {
-    console.log(answer, 1);
+    // window.alert(answer, 2)
+    console.log(answer)
   }
 }
 
