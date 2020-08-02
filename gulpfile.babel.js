@@ -1,8 +1,9 @@
-import gulp from 'gulp'
+import { src, dest, series, parallel, watch, task } from 'gulp'
 import plumber from 'gulp-plumber'
 import notify from 'gulp-notify'
 import rename from 'gulp-rename'
 import sourcemaps from 'gulp-sourcemaps'
+import del from 'del'
 
 import { rollup } from 'rollup'
 import rollupConfig from './rollup.config.js'
@@ -24,7 +25,8 @@ import template from 'gulp-template'
 
 /* ---------------------- # BrowserSync ---------------------- */
 const browserSyncCreate = browserSync.create()
-gulp.task('browser-sync', (done) => {
+
+const browserSyncServer = done => {
   browserSyncCreate.init({
     server: {
       baseDir: './dist/'
@@ -32,14 +34,14 @@ gulp.task('browser-sync', (done) => {
     port: 3000
   })
   done()
-})
+}
 
-gulp.task('reload', async () => {
+const browserSyncReload = async () => {
   browserSyncCreate.reload()
-})
+}
 
 /* ---------------------- # JavaScript ---------------------- */
-gulp.task('js:development', async () => {
+const jsDevelopment = async () => {
   const bundle = await rollup({
     input: rollupConfig.input,
     external: rollupConfig.external,
@@ -49,9 +51,9 @@ gulp.task('js:development', async () => {
   await bundle.write(rollupConfig.output[0])
 
   browserSyncCreate.reload()
-})
+}
 
-gulp.task('js:production', async () => {
+const jsProduction = async () => {
   const bundle = await rollup({
     input: rollupConfig.input,
     external: rollupConfig.external,
@@ -59,13 +61,12 @@ gulp.task('js:production', async () => {
   })
 
   await bundle.write(rollupConfig.output[1])
-})
+}
 
 /* ---------------------- # Sass ---------------------- */
 sass.compiler = dartSass
-gulp.task('sass:development', async () => {
-  gulp
-    .src('./src/sass/**/*.scss')
+const sassDevelopment = async () => {
+  src('./src/sass/**/*.scss')
     .pipe(sourcemaps.init())
     .pipe(plumber({ errorHandler: notify.onError(sass.logError) }))
     .pipe(
@@ -86,14 +87,13 @@ gulp.task('sass:development', async () => {
     ]))
     .pipe(rename({ basename: 'style' }))
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('./dist/assets/css/'))
+    .pipe(dest('./dist/assets/css/'))
 
   browserSyncCreate.reload()
-})
+}
 
-gulp.task('sass:production', async () => {
-  gulp
-    .src('./src/sass/**/*.scss')
+const sassProduction = async () => {
+  src('./src/sass/**/*.scss')
     .pipe(
       sass({
         fiber: Fiber,
@@ -113,12 +113,12 @@ gulp.task('sass:production', async () => {
     ]))
     .pipe(rename({ basename: 'style' }))
     .pipe(postcss([cssnano({ autoprefixer: false })]))
-    .pipe(gulp.dest('./dist/assets/css/'))
-})
+    .pipe(dest('./dist/assets/css/'))
+}
 
 /* ---------------------- # SVG Sprite ---------------------- */
-gulp.task('svg:sprite', done => {
-  gulp.src('./src/svg/**/.svg')
+const svgSprite = () => {
+  return src('./src/svg/**/*.svg')
     .pipe(plumber({
       errorHandler: notify.onError('Error: <%= error.message %>')
     }))
@@ -126,79 +126,72 @@ gulp.task('svg:sprite', done => {
     .pipe(svgmin())
     .pipe(svgstore({ inlineSvg: true }))
     .pipe(cheerio({
-      run: function ($, file) {
-        // 不要なタグを削除
-        $('style,title,defs').remove()
-        // symbolタグ以外のid属性を削除
-        $('[id]:not(symbol)').removeAttr('id')
-        // Illustratorで付与される「st」または「cls」ではじまるclass属性を削除
-        $('[class^="st"],[class^="cls"]').removeAttr('class')
-        // svgタグ以外のstyle属性を削除
-        $('[style]:not(svg)').removeAttr('style')
-        // data-name属性を削除
-        $('[data-name]').removeAttr('data-name')
-        // fill属性を削除
-        $('[fill]').removeAttr('fill')
-        // svgタグにdisplay:noneを付与（読み込み時、スプライト全体を非表示にするため）
+      run: ($, file) => {
+        $('style,title,defs').remove() // 不要なタグを削除
+        $('[id]:not(symbol)').removeAttr('id') // symbolタグ以外のid属性を削除
+        $('[class^="st"],[class^="cls"]').removeAttr('class') // // Illustratorで付与される「st」または「cls」ではじまるclass属性を削除
+        $('[style]:not(svg)').removeAttr('style') // svgタグ以外のstyle属性を削除
+        $('[data-name]').removeAttr('data-name') // data-name属性を削除
+        $('[fill]').removeAttr('fill') // fill属性を削除
         $('svg').attr('style', 'position: absolute; width: 0; height: 0; overflow: hidden;')
 
-        let $svg = $('svg').html().replace(/(<g>|<\/g>)/g, '') // <g>を削除
+        let $svg = $('svg').html().replace(/<(<g|\/g)>/g, '') // <g>を削除
 
-        const $saveSymbol = $($svg)
+        $svg = $('<defs></defs>').html($($svg)) // defsで囲む処理
 
-        $svg = $('<defs></defs>').html($saveSymbol) // defsで囲む処理
-
-        // _template.htmlに渡すid
-        var symbols = $('svg > symbol').map(() => {
-          return {
-            id: $(this).attr('id')
-          }
+        // _base.htmlに渡すid
+        const symbols = $('svg > symbol').map(function () {
+          return { id: $(this).attr('id') }
         }).get()
 
-        // _template.htmlを基に、_sample.htmlをルートに生成
-        gulp.src('./src/images/svg/_template.html')
+        // 一度中身を空にして追加
+        $('svg').empty()
+        $('svg').append($svg)
+
+        // _base.htmlを基に、index.htmlをルートに生成
+        src('./src/svg/_template.html')
           .pipe(template({
             inlineSvg: $('svg'),
             symbols: symbols
           }))
-          .pipe(rename('sprite-sheet.html'))
-          .pipe(gulp.dest('./src/svg/'))
+          .pipe(rename('index.html'))
+          .pipe(dest('./dist/assets/svg/'))
       },
       parserOptions: {
         xmlMode: true
       }
     }))
     .pipe(rename('sprite.svg'))
-    .pipe(gulp.dest('./dist/assets/svg/'))
-
-  done()
-})
+    .pipe(dest('./dist/assets/svg/'))
+}
 
 /* ---------------------- # Watch ---------------------- */
-gulp.task('watch', () => {
-  gulp.watch('./src/js/**/*.js', gulp.series('js:development'))
-  gulp.watch('./src/svg/**/*.svg', gulp.series('svg:sprite'))
-  gulp.watch('./src/sass/**/*.scss', gulp.series('sass:development'))
-  gulp.watch('./dist/assets/**/*.(html|php)', gulp.series('reload'))
-})
+const watching = () => {
+  watch('./src/js/**/*.js', series(jsDevelopment))
+  watch('./src/svg/**/*.svg', series(svgSprite))
+  watch('./src/sass/**/*.scss', series(sassDevelopment))
+  watch('./dist/**/*.(html|php)', series(browserSyncReload))
+}
 
-/* ---------------------- # Default ---------------------- */
-gulp.task(
-  'default',
-  gulp.series(
-    'js:production',
-    'sass:production',
-    'svg:sprite'
-  )
+/* ---------------------- # exports ---------------------- */
+// 納品用
+exports.default = series(
+  jsProduction,
+  sassProduction,
+  svgSprite
 )
 
-gulp.task(
-  'start',
-  gulp.series(
-    'js:development',
-    'sass:development',
-    'svg:sprite',
-    'browser-sync',
-    'watch'
-  )
+// 開発用
+exports.start = series(
+  jsDevelopment,
+  sassDevelopment,
+  svgSprite,
+  browserSyncServer,
+  watching
 )
+
+// 開発終了後
+exports.clean = cb => {
+  del(src('./dist'))
+  cb()
+}
