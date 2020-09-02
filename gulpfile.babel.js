@@ -3,11 +3,22 @@ import { src, dest, series, parallel, watch, task } from 'gulp'
 import plumber from 'gulp-plumber'
 import notify from 'gulp-notify'
 import rename from 'gulp-rename'
-import sourcemaps from 'gulp-sourcemaps'
+// import sourcemaps from 'gulp-sourcemaps'
 import del from 'del'
+import pkg from './package.json'
+import camelCase from 'lodash.camelcase'
+import upperFirst from 'lodash.upperfirst'
 
 import { rollup } from 'rollup'
 import rollupConfig from './rollup.config.js'
+import rollupTypescript from '@rollup/plugin-typescript' // TypeScript
+import json from '@rollup/plugin-json'
+import nodeResolve from '@rollup/plugin-node-resolve' // node_modules
+import replace from '@rollup/plugin-replace'
+import commonjs from '@rollup/plugin-commonjs' // CommonJSモジュールをES6に変換
+import babel from '@rollup/plugin-babel' // Babel
+import { terser } from 'rollup-plugin-terser' // JS minfy
+
 import browserSync from 'browser-sync'
 
 import Fiber from 'fibers'
@@ -25,12 +36,11 @@ import svgstore from 'gulp-svgstore'
 import cheerio from 'gulp-cheerio'
 import template from 'gulp-template'
 
-import nunjucks from 'gulp-nunjucks-render'
-import data from 'gulp-data'
+import ejs from 'gulp-ejs'
 import beautify from 'gulp-html-beautify'
 
 const NS = {
-  ASSETS: 'wordpress/wp-content/themes/minamiaso/assets', // assets
+  ASSETS: 'assets', // assets
   CSS: 'css',
   SASS: 'sass',
   JS: 'js',
@@ -40,10 +50,12 @@ const NS = {
   SVG: 'svg',
   SPRITES: 'sprites',
   TEMPLATE: 'template',
+  EJS: 'ejs',
   DIST: './dist',
   SRC: './src',
   ICONFILE: 'sprite.svg',
-  CSSFILENAME: 'main'
+  CSSFILENAME: 'main',
+  JSFILENAME: 'main'
 }
 
 /* ビルド前 */
@@ -53,6 +65,7 @@ SRC.SASS = `${SRC.ROOT}${NS.SASS}/`
 SRC.JS = `${SRC.ROOT}${NS.JS}/`
 SRC.ICON = `${SRC.ROOT}${NS.ICON}/`
 SRC.TEMPLATE = `${SRC.ROOT}${NS.TEMPLATE}/`
+SRC.EJS = `${SRC.ROOT}${NS.EJS}/`
 SRC.SPRITES = `${SRC.ROOT}${NS.SPRITES}/`
 
 /* ビルド後 */
@@ -74,7 +87,7 @@ const dirLog = () => {
   - sass【 ${SRC.SASS} 】
   - js【 ${SRC.JS} 】
   - SVGスプライト【 ${SRC.ICON} 】
-  - テンプレートエンジン【 ${SRC.TEMPLATE} 】
+  - EJS【 ${SRC.EJS} 】
 
   # ビルド後
   - ルート【 ${DIST.ROOT} 】
@@ -106,14 +119,52 @@ const browserSyncReload = async () => {
 }
 
 /* ---------------------- # JavaScript ---------------------- */
-const jsDevelopment = async () => {
+// const moduleName = upperFirst(camelCase(pkg.name.replace(/^@.*\//, '')))
+// ライブラリに埋め込むcopyright
+// const banner = `/*!
+//   ${moduleName}.js v${pkg.version}
+//   ${pkg.homepage}
+//   Released under the ${pkg.license} License.
+// */`
+
+const moduleName = upperFirst(camelCase(pkg.name.replace(/^@.*\//, '')))
+const rollupDistfileName = NS.JSFILENAME + '.js'
+
+// ライブラリに埋め込むcopyright
+// const banner = `/*!
+//   ${moduleName}.js v${pkg.version}
+//   ${pkg.homepage}
+//   Released under the ${pkg.license} License.
+// */`
+
+// pluginsは変数に打ち込むとウォッチでコンパイルされなくなる...
+const jsDevelopment = async (cb) => {
   const bundle = await rollup({
     input: rollupConfig.input,
-    external: rollupConfig.external,
-    plugins: rollupConfig.plugins
+    external: [...Object.keys(pkg.devDependencies || {})], // 開発用モジュールは含めない
+    plugins: [
+      json(),
+      nodeResolve({
+        browser: true
+      }),
+      rollupTypescript(),
+      commonjs({ extensions: ['.ts', '.js'] }),
+      replace({
+        'process.env.NODE_ENV': JSON.stringify('production')
+      }),
+      babel({
+        babelHelpers: 'runtime', // 'bundled' | 'runtime' | 'inline' | 'external'
+        exclude: 'node_modules/**'
+      })
+    ]
   })
 
-  await bundle.write(rollupConfig.output[0])
+  await bundle.write({
+    file: DIST.JS + rollupDistfileName,
+    format: 'iife',
+    name: 'APPS' // moduleName
+    // banner
+  })
 
   browserSyncCreate.reload()
 }
@@ -121,11 +172,44 @@ const jsDevelopment = async () => {
 const jsProduction = async () => {
   const bundle = await rollup({
     input: rollupConfig.input,
-    external: rollupConfig.external,
-    plugins: rollupConfig.plugins
+    external: [...Object.keys(pkg.devDependencies || {})], // 開発用モジュールは含めない
+    plugins: [
+      json(),
+      nodeResolve({
+        browser: true
+      }),
+      rollupTypescript(),
+      commonjs({ extensions: ['.ts', '.js'] }),
+      replace({
+        'process.env.NODE_ENV': JSON.stringify('production')
+      }),
+      babel({
+        babelHelpers: 'runtime', // 'bundled' | 'runtime' | 'inline' | 'external'
+        exclude: 'node_modules/**'
+      })
+    ]
   })
 
-  await bundle.write(rollupConfig.output[1])
+  await bundle.write({
+    file: DIST.JS + rollupDistfileName,
+    format: 'iife',
+    name: 'APPS', // moduleName
+    // banner,
+    plugins: [
+      terser({
+        output: {
+          comments: function (node, comment) {
+            var text = comment.value
+            var type = comment.type
+            if (type === 'comment2') {
+              // multiline comment
+              return /@preserve|@license|@cc_on/i.test(text)
+            }
+          }
+        }
+      })
+    ]
+  })
 }
 
 /* ---------------------- # Sass ---------------------- */
@@ -148,7 +232,10 @@ const sassDevelopment = async () => {
         browsers: [
           'last 2 versions',
           'ie >= 11'
-        ]
+        ],
+        features: {
+          customProperties: false
+        }
       })
     ]))
     .pipe(rename({ basename: `${NS.CSSFILENAME}` }))
@@ -160,6 +247,7 @@ const sassDevelopment = async () => {
 
 const sassProduction = async () => {
   src(`${SRC.SASS}**/*.scss`)
+    .pipe(sassGlob())
     .pipe(
       sass({
         fiber: Fiber,
@@ -174,7 +262,10 @@ const sassProduction = async () => {
         browsers: [
           'last 2 versions',
           'ie >= 11'
-        ]
+        ],
+        features: {
+          customProperties: false
+        }
       })
     ]))
     .pipe(rename({ basename: `${NS.CSSFILENAME}` }))
@@ -232,23 +323,19 @@ const svgSprite = () => {
     .pipe(dest(`${DIST.SVG}`))
 }
 
-/* ---------------------- # Nunjucks ---------------------- */
-const nunjucksTask = async () => {
-  src(`${SRC.TEMPLATE}**/*.njk`)
+/* ---------------------- # Ejs ---------------------- */
+const ejsTask = async () => {
+  src([`${SRC.EJS}**/*.ejs`, `!${SRC.EJS}**/_*.ejs`])
     .pipe(
       plumber({
-        errorHandler: notify.onError('\n' + 'Nunjucks に Error が存在します' + '\n' + '<%= error.message %>' + '\n')
+        errorHandler: notify.onError('\n' + 'ejs に Error が存在します' + '\n' + '<%= error.message %>' + '\n')
       })
     )
-    .pipe(data(function () {
-      return require(`${SRC.TEMPLATE}_data/config.json`)
-    }))
-    .pipe(nunjucks({
-      path: `${SRC.TEMPLATE}`
-    }))
+    .pipe(ejs({ fs }, {}))
     .pipe(beautify({
       indent_size: 2
     }))
+    .pipe(rename({ extname: '.html' }))
     .pipe(dest(`${DIST.ROOT}`))
 
   browserSyncCreate.reload()
@@ -259,7 +346,7 @@ const watching = () => {
   watch(`${SRC.JS}**/*.(js|ts)`, series(jsDevelopment))
   watch(`${SRC.ICON}**/*.svg`, series(svgSprite))
   watch(`${SRC.SASS}**/*.scss`, series(sassDevelopment))
-  watch(`${SRC.TEMPLATE}**/*.njk`, series(nunjucksTask))
+  watch(`${SRC.EJS}**/*.ejs`, series(ejsTask))
   watch(`${DIST.ROOT}**/*.(php)`, series(browserSyncReload))
 }
 
@@ -269,12 +356,12 @@ exports.default = series(
   jsProduction,
   sassProduction,
   svgSprite,
-  nunjucksTask
+  ejsTask
 )
 
 // 開発用
 exports.start = series(
-  nunjucksTask,
+  ejsTask,
   jsDevelopment,
   sassDevelopment,
   svgSprite,

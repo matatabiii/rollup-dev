@@ -8,8 +8,6 @@ import { terser } from 'rollup-plugin-terser' // JS minfy
 import pkg from './package.json'
 import camelCase from 'lodash.camelcase'
 import upperFirst from 'lodash.upperfirst'
-// import builtins from 'rollup-plugin-node-builtins'
-// import globals from 'rollup-plugin-node-globals'
 
 // Scopeを除去する
 const moduleName = upperFirst(camelCase(pkg.name.replace(/^@.*\//, '')))

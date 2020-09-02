@@ -1,0 +1,38 @@
+<%
+const root = './'
+include(root + '_data/_require.ejs')
+
+const data = initData({
+  root: root,
+  type: 'single',
+  slug: 'front-page',
+  file: 'hoge.html',
+  title: '内部ページタイトル',
+  // titlefull: 'タイトルタグを上書きする場合',
+})
+
+data.head.description = '内部ディスクリプション'
+data.head.og.type = 'webside'
+// data.head.canonical = false
+// data.head.og.url = false
+
+const fvGet = data.get(data)
+console.log(fvGet);
+%>
+
+
+
+<% function left (__append) { %>
+<% } %>
+
+<% function right (__append) { %>
+  This is the right side!
+<% } %>
+
+<%-
+  include(root + '_layout/_default.ejs', {
+    left,
+    right,
+    data
+  })
+%>

@@ -47,10 +47,9 @@
     "fibers": "^5.0.0",
     "gulp": "^4.0.2",
     "gulp-cheerio": "^1.0.0",
-    "gulp-data": "^1.3.1",
+    "gulp-ejs": "^5.1.0",
     "gulp-html-beautify": "^1.0.1",
     "gulp-notify": "^3.2.0",
-    "gulp-nunjucks-render": "^2.2.3",
     "gulp-plumber": "^1.2.1",
     "gulp-postcss": "^8.0.0",
     "gulp-rename": "^2.0.0",
@@ -74,11 +73,13 @@
   "dependencies": {
     "@babel/runtime": "^7.11.0",
     "axios": "^0.19.2",
+    "css-vars-ponyfill": "^2.3.2",
     "es6-promise": "^4.2.8",
     "formdata-polyfill": "^3.0.20",
     "perfect-scrollbar": "^1.5.0",
     "sass-easing": "^1.0.3",
     "siema": "^1.5.1",
+    "smooth-scroll": "^16.1.3",
     "tslib": "^2.0.1"
   }
 }

@@ -1,0 +1,29 @@
+<%# レイアウトファイル: デフォルトテンプレート %>
+<%
+%>
+
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <% if (typeof header !== 'undefined') { %>
+    <%- header(__append) %>
+  <% } else { %>
+    This is the default content
+  <% } %>
+
+  <section class="left">
+    <%- typeof left !== 'undefined' ? left(__append) : null %>
+  </section>
+
+  <section class="right">
+    <%- typeof right !== 'undefined' ? right(__append) : 'This is more content' %>
+  </section>
+
+</body>
+</html>

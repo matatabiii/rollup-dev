@@ -1,0 +1,211 @@
+<%
+  // 書き出し環境設定（public | dev | local）
+  let ENV = 'local'
+
+  // WordPress流し込みを楽にする設定
+  const WP_MODE = false
+
+  // WordPressモード（アセットのパス関係がテーマ内に書き換わったり）
+  const IS_WP = false
+
+  // パスモード（absolute | relative | root）
+  const PATH_MODE = 'relative'
+
+  const config = {
+    // サイト名
+    siteName: '開発テンプレート',
+    // ディスクリプション
+    description: 'ディスクリプションを設定してください',
+    // タイトル
+    // 環境ごとのルート定義
+    path: {
+      root: '/',
+      rootDev: '/example.dev.com/html/',
+      rootLocal: '/'
+    },
+    // 環境ごとのURL定義
+    siteUrl: {
+      public: 'https://example.com',
+      dev: 'https://test-fv.net',
+      local: 'http://localhost:3000'
+    },
+    // 環境に応じたファイル名（開発環境でデバッグしやすく）
+    fileName: {
+      style: 'style.css',
+      styleDev: 'style.css',
+      js: 'style.css',
+      jsDev: 'style.css',
+      ogImage: 'og-image.jpg',
+      icon: 'favicon.ico',
+      appleTouchIcon: 'apple-touch-icon.png',
+    },
+    // ディレクトリ名
+    dirName: {
+      wpAssets: "wp/wp-content/themes/project2020/assets",
+      assets: "assets",
+      media: "media",
+      css: "css",
+      js: "js",
+      images: "images",
+      svg: "svg"
+    },
+    // 文字コード
+    charset: 'utf-8',
+    // 言語
+    lang: 'ja',
+    // ロケール
+    locale: 'ja_JP'
+  }
+
+  // 内部ページタイトル規則
+  config.titleTemplate = '%s | ' + config.siteName
+
+
+  if (WP_MODE) ENV = 'public'
+
+  // 本番環境用か判別
+  const IS_PUBLIC = ENV !== 'local'
+
+  // 名前空間
+  const name = {
+    assets: IS_WP ? config.dirName.wpAssets : config.dirName.assets,
+    media: config.dirName.media,
+    css: config.dirName.css,
+    js: config.dirName.js,
+    images: config.dirName.images,
+    svg: config.dirName.svg,
+    images: config.dirName.images,
+    fileStyle: IS_PUBLIC ? config.fileName.style : config.fileName.styleDev,
+    fileJs: IS_PUBLIC ? config.fileName.js : config.fileName.jsDev,
+  }
+
+  initData = function (page) {
+    // サイトURL
+    let siteUrl = config.siteUrl.public
+
+
+    // 相対パス
+    const path = {
+      root: config.path.root,
+    }
+
+    // 環境に応じたそれぞれのパスを決定
+    if (ENV === 'local') {
+      path.root = config.path.rootLocal
+      siteUrl = config.siteUrl.local
+    } else if (ENV === 'dev') {
+      path.root = config.path.rootDev
+      siteUrl = config.siteUrl.dev
+    }
+
+    // 絶対URL
+    path.absolute = siteUrl + path.root
+    path.absoluteAssets = path.absolute + name.assets + '/'
+    path.absoluteMedia = path.absolute + name.assets + '/' + name.media + '/'
+    path.absoluteImages = path.absolute + name.assets + '/' + name.images + '/'
+    path.absoluteCss = path.absolute + name.assets + '/' + name.css + '/'
+    path.absoluteJs = path.absolute + name.assets + '/' + name.js + '/'
+    path.absoluteSvg = path.absolute + name.assets + '/' + name.svg + '/'
+
+    // 絶対URLモード
+    if (PATH_MODE === 'absolute') {
+      path.root = path.absolute
+      path.assets = path.absoluteAssets
+      path.media = path.absoluteMedia
+      path.images = path.absoluteImages
+      path.css = path.absoluteCss
+      path.js = path.absoluteJs
+      path.svg = path.absoluteSvg
+    } else if (PATH_MODE === 'relative') {
+      path.root = page.root
+    }
+
+    path.assets = path.root + name.assets + '/'
+    path.media = path.assets + name.media + '/'
+    path.images = path.assets + name.images + '/'
+    path.css = path.assets + name.css + '/'
+    path.js = path.assets + name.js + '/'
+    path.svg = path.assets + name.svg + '/'
+
+    // head内metaタグ等
+    const head = {
+      title: config.siteName,
+      charset: config.charset,
+      description: config.description,
+      author: config.siteName,
+      canonical: true,
+      icon: path.absoluteImages + config.fileName.icon,
+      appleTouchIcon: path.absoluteImages + config.fileName.appleTouchIcon,
+      og: {
+        locale: 'ja_JP',
+        type: 'article',
+        image: path.absoluteImages + config.fileName.ogImage,
+        url: true,
+      }
+    }
+
+    const data = {
+      lang: config.lang,
+      siteName: config.siteName,
+      titleTemplate: config.titleTemplate,
+      wpMode: WP_MODE,
+      isWp: IS_WP,
+      fulldate: new Date().getYear() + '' + new Date().getMonth() + 1 + '' + new Date().getDate() + '' + new Date().getHours() + '' + new Date().getMinutes() + '' + new Date().getSeconds(),
+      mddate: new Date().getMonth() + 1 + '/' + new Date().getDate() + ' ' + new Date().getHours() + '',
+      root: config.path.root,
+      head: head,
+      path: path,
+      siteUrl: siteUrl,
+      page: page
+    }
+
+    const get = (data) => {
+      const _data = {
+        lang: data.lang,
+        siteName: data.siteName,
+        titleTemplate: data.titleTemplate,
+        wpMode: data.wpMode,
+        isWp: data.isWp,
+        fulldate: data.fulldate,
+        root: data.root,
+        head: data.head,
+        path: data.path,
+        siteUrl: siteUrl,
+        mddate: data.mddate,
+        root: data.path.root,
+        assets: data.path.assets,
+        media: data.path.media,
+        images: data.path.images,
+        css: data.path.css,
+        js: data.path.js,
+        svg: data.path.svg,
+        absolute: data.path.absolute,
+        absoluteAssets: data.path.absoluteAssets,
+        absoluteMedia: data.path.absoluteMedia,
+        absoluteImages: data.path.absoluteImages,
+        absoluteCss: data.path.absoluteCss,
+        absoluteJs: data.path.absoluteJs,
+        absoluteSvg: data.path.absoluteSvg,
+        page: data.page
+      }
+
+      _data.head.title = _data.titleTemplate.replace('%s', _data.page.title)
+
+      if (_data.page.titlefull) _data.head.title = _data.page.titlefull
+
+      if (_data.head.canonical) {
+        _data.head.canonical = _data.absolute + _data.page.file
+      }
+
+      if (_data.head.og.url) {
+        _data.head.og.url = _data.absolute + _data.page.file
+      }
+
+      return _data
+    }
+
+    data.get = get
+
+    return data
+  }
+%>
