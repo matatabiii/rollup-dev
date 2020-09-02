@@ -1,0 +1,32 @@
+{
+  "data" : {
+    "path": {
+      "root": "/",
+      "rootDev": "/minamiaso/html/",
+      "rootLocal": "/"
+    },
+    "siteUrl": {
+      "public": "https://minamiaso.jp",
+      "dev": "https://test-fv.net",
+      "local": "http://localhost:3000"
+    },
+    "fileName": {
+      "style": "main.css",
+      "styleDev": "main.css",
+      "js": "main.js",
+      "jsDev": "main.js"
+    },
+    "dirName": {
+      "wpAssets": "wordpress/wp-content/themes/minamiaso/assets",
+      "assets": "wordpress/wp-content/themes/minamiaso/assets",
+      "media": "media",
+      "css": "css",
+      "js": "js",
+      "images": "images",
+      "svg": "svg"
+    },
+    "googlemap": "",
+    "sitename" : "みなみあそ観光地域づくり〜",
+    "basename" : "みなみあそ観光地域づくり"
+  }
+}

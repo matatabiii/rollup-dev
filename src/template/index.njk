@@ -1,0 +1,465 @@
+{%-
+  set fvSet = {
+    'page': 'home',
+    'title': data.sitename,
+    'description': 'ディスクリプション',
+    'heroParent': false,
+    'heroMain': false,
+    'heroSub': false,
+    'subLayout': false,
+    'single': false,
+    'goolgle': false,
+    'canonical': true,
+    'ogtype': 'website'
+  }
+-%}
+
+{% extends '_modules/_layout.njk' %}
+
+{# cssやjsをheadに追記など #}
+{% block addHeader %}
+{% endblock %}
+
+
+{# メインコンテンツ外 - 上 #}
+{% block contentsOverTop %}
+{% endblock %}
+
+
+{# メインコンテンツ #}
+{% block contents %}
+<div class="p-mv">
+  <div class="p-mv__inner  c-container-container">
+    <a class="p-mv__season  u-family-hx" href="{{fvGet.root}}season/">
+      <div class="p-mv__season__inner">
+        <div class="p-mv__season__label  u-text-caldera  js-parser">阿蘇のカルデラ</div>
+        <div class="p-mv__season__icon  u-text-caldera"><svg class="c-icon-volcano">
+            <use xlink:href="#icon-volcano"></use>
+          </svg></div>
+        <div class="p-mv__season__month  p-mv__season__text  p-text-clip-text"><span class="p-mv__season__month__self">8</span>月の</div>
+        <div class="p-mv__season__minamiaso  p-mv__season__text  p-text-clip-text">みなみあそ</div>
+      </div>
+      <svg class="p-mv__season__border" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="254.062" height="254.062" viewBox="0 0 254.062 254.062">
+        <defs>
+          <style>
+            .cls-1 {
+              fill: none;
+              stroke-linejoin: round;
+              stroke-width: 4px;
+              opacity: 0.78;
+              stroke: url(#linear-gradient);
+            }
+          </style>
+          <linearGradient id="linear-gradient" x1="127.031" y1="252.062" x2="127.031" y2="2" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#71ca11" />
+            <stop offset="0.003" stop-color="#71ca11" />
+            <stop offset="0.994" stop-color="#f4e45a" />
+            <stop offset="1" stop-color="#f4e45a" />
+          </linearGradient>
+        </defs>
+        <circle id="season-enter-border.svg" class="cls-1" cx="127.031" cy="127.031" r="125.031" />
+      </svg>
+    </a>
+    <div class="p-mv__link">
+      <ul class="c-flex">
+        <li class="u-w-3  t:u-w-6">
+          <a class="p-mv__link__item  u-text-white" href="{{fvGet.root}}company/">
+            <span class="p-mv__link__item__icon"><svg class="c-icon-people"><use xlink:href="#icon-people"></use></svg></span>
+            <span class="p-mv__link__item__title  u-mt-x-small  u-mb-x-small  u-family-hx">企業の方へ</span>
+            <span class="p-mv__link__item__text">南阿蘇の経済活動や<br>雇用に関して</span>
+          </a>
+        </li>
+        <li class="u-w-3  t:u-w-6">
+          <a class="p-mv__link__item  u-text-white" href="{{fvGet.root}}spot/">
+            <span class="p-mv__link__item__icon"><svg class="c-icon-flag"><use xlink:href="#icon-flag"></use></svg></span>
+            <span class="p-mv__link__item__title  u-mt-x-small  u-mb-x-small  u-family-hx">観光</span>
+            <span class="p-mv__link__item__text">南阿蘇の観光スポットや<br>見どころをご紹介</span>
+          </a>
+        </li>
+        <li class="u-w-3  t:u-w-6">
+          <a class="p-mv__link__item  u-text-white" href="{{fvGet.root}}event/">
+            <span class="p-mv__link__item__icon"><svg class="c-icon-calendar"><use xlink:href="#icon-calendar-check"></use></svg></span>
+            <span class="p-mv__link__item__title  u-mt-x-small  u-mb-x-small  u-family-hx">イベントカレンダー</span>
+            <span class="p-mv__link__item__text">さまざまな催し物等を<br>開催日ごとにご案内</span>
+          </a>
+        </li>
+        <li class="u-w-3  t:u-w-6">
+          <a class="p-mv__link__item  u-text-white" href="{{fvGet.root}}">
+            <span class="p-mv__link__item__icon"><svg class="c-icon-earth"><use xlink:href="#icon-earth"></use></svg></span>
+            <span class="p-mv__link__item__title  u-mt-x-small  u-mb-x-small  u-family-hx">Welcome to Minamiaso</span>
+            <span class="p-mv__link__item__text">information for foreign <br>nationals</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="p-mv__news">
+    <div class="p-mv__news__inner">
+      <div class="p-mv__news__label  u-text-white  u-family-hx">お知らせ</div>
+      <div class="p-mv__news__content">
+        <span class="p-mv__news__content__date">2020.03.10</span>
+        <a class="p-mv__news__content__title" href="{{fvGet.root}}blog/%e3%83%9b%e3%83%bc%e3%83%a0%e3%83%9a%e3%83%bc%e3%82%b8%e3%81%8c%e5%87%ba%e6%9d%a5%e3%81%be%e3%81%97%e3%81%9f%ef%bc%81/">ホームページが出来ました！</a>
+        <a class="p-mv__news__content__more  u-family-hx" href="{{fvGet.root}}blog/category/%e3%81%8a%e7%9f%a5%e3%82%89%e3%81%9b/">一覧を見る<svg class="c-icon-chevron-circle-right-solid  u-ml-small">
+            <use xlink:href="#icon-chevron-circle-right-solid"></use>
+          </svg></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-mv__image">
+    <div class="p-mv__image__slider-container" data-slider-mv-container="mv">
+      <div class="p-mv__image__slider" data-slider-mv="mv">
+        <div class="p-mv__image__slider__slide">
+          <img src="{{fvGet.images}}uploads/2020/03/img01-1340x800.jpg" srcset="{{fvGet.images}}uploads/2020/03/img01-scaled.jpg 2x" alt="">
+        </div>
+        <div class="p-mv__image__slider__slide">
+          <img src="{{fvGet.images}}uploads/2020/03/img02-1340x800.jpg" srcset="{{fvGet.images}}uploads/2020/03/img02-scaled.jpg 2x" alt="">
+        </div>
+        <div class="p-mv__image__slider__slide">
+          <img src="{{fvGet.images}}uploads/2020/03/img03-1340x800.jpg" srcset="{{fvGet.images}}uploads/2020/03/img03-scaled.jpg 2x" alt="">
+        </div>
+        <div class="p-mv__image__slider__slide">
+          <img src="{{fvGet.images}}uploads/2020/03/img04-1340x800.jpg" srcset="{{fvGet.images}}uploads/2020/03/img04-scaled.jpg 2x" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="c-container-container  u-mt-x-large  u-mb-large">
+  <header class="p-header  u-family-hx  u-mb-medium">
+    <div class="p-header__icon  u-text-white  u-bg-blog"><svg class="p-header__icon__self  c-icon-yama"><use xlink:href="#icon-yama"></use></svg></div>
+    <div class="p-header__hgroup">
+      <h2 class="p-header__title">みなみあそブログ</h2>
+      <span class="p-header__label  u-text-gray-300">aso blog</span>
+    </div>
+    <div class="p-header__link"><a class="p-btn  p-btn--blog  p-btn--more  u-text-white" href="{{fvGet.root}}blog/">一覧を見る<svg class="c-icon-chevron-circle-right-solid  u-ml-gutter"><use xlink:href="#icon-chevron-circle-right-solid"></use></svg></a></div>
+  </header>
+  <div class="c-full-width">
+    <div class="p-slider-container  c-cf" data-slider-standard-container="blog">
+      <ul class="c-flex" data-slider-standard="blog">
+        <li class="u-w-3">
+          <a class="p-post" href="{{fvGet.root}}blog/%e3%83%9b%e3%83%bc%e3%83%a0%e3%83%9a%e3%83%bc%e3%82%b8%e3%81%8c%e5%87%ba%e6%9d%a5%e3%81%be%e3%81%97%e3%81%9f%ef%bc%81/">
+            <div class="p-post__thumb  u-mb-small"><img src="{{fvGet.images}}uploads/2020/03/no-image-260x190.jpg" srcset="{{fvGet.images}}uploads/2020/03/no-image.jpg 2x" alt=""></div>
+            <div class="p-post__date  u-text-gray-200">2020.03.10</div>
+            <div class="p-post__title">ホームページが出来ました！</div>
+            <div class="p-post__category  u-family-hx  u-mt-small">
+              <ul class="c-flex">
+                <li>
+                  <span class="p-post__category__item  u-text-white  u-bg-blog">お知らせ</span>
+                </li>
+              </ul>
+            </div>
+          </a>
+        </li>
+      </ul>
+      <button class="p-slider-btn  p-slider-btn--circle  p-slider-btn--prev  u-text-blog" data-slider-standard-prev="blog"><svg class="c-icon-chevron-circle-left-light">
+          <use xlink:href="#icon-chevron-circle-left-light"></use>
+        </svg></button>
+      <button class="p-slider-btn  p-slider-btn--circle  p-slider-btn--next  u-text-blog" data-slider-standard-next="blog"><svg class="c-icon-chevron-circle-right-light">
+          <use xlink:href="#icon-chevron-circle-right-light"></use>
+        </svg></button>
+    </div>
+  </div>
+</section>
+
+<div class="u-bg-section-bg  u-pt-x-large  u-pb-large">
+  <div class="c-container-container">
+    <div class="c-flex">
+
+      <div class="u-width-main">
+        <section>
+          <header class="p-header  u-family-hx  u-mb-smaller">
+            <div class="p-header__icon  u-text-white  u-bg-spot"><svg class="p-header__icon__self  c-icon-flag">
+                <use xlink:href="#icon-flag"></use>
+              </svg></div>
+            <div class="p-header__hgroup">
+              <h2 class="p-header__title">スポット情報</h2>
+              <span class="p-header__label  u-text-gray-300">spot information</span>
+            </div>
+            <div class="p-header__description  u-family-sans  u-text-gray-400">南阿蘇の観光スポットや見どころをご紹介</div>
+            <div class="p-header__link"><a class="p-btn  p-btn--spot  p-btn--more  u-text-white" href="{{fvGet.root}}spot/">一覧を見る<svg class="c-icon-chevron-circle-right-solid  u-ml-gutter">
+                  <use xlink:href="#icon-chevron-circle-right-solid"></use>
+                </svg></a></div>
+          </header>
+          <div class="p-category-area  u-family-hx  u-mb-medium  u-bg-spot">
+            <div class="p-category-area__scroll  js-ps-x">
+              <ul class="p-category-area__list">
+                <li class="p-category-area__list__col"><a class="p-category  u-text-spot" href="{{fvGet.root}}spot/category/%e3%82%b0%e3%83%ab%e3%83%a1/">グルメ</a></li>
+                <li class="p-category-area__list__col"><a class="p-category  u-text-spot" href="{{fvGet.root}}spot/category/%e4%bd%93%e9%a8%93/">体験</a></li>
+                <li class="p-category-area__list__col"><a class="p-category  u-text-spot" href="{{fvGet.root}}spot/category/%e5%a3%b2%e5%ba%97/">売店</a></li>
+                <li class="p-category-area__list__col"><a class="p-category  u-text-spot" href="{{fvGet.root}}spot/category/%e5%a4%96%e5%9b%bd%e4%ba%ba%e5%af%be%e5%bf%9c%e5%8f%af/">外国人対応可</a></li>
+                <li class="p-category-area__list__col"><a class="p-category  u-text-spot" href="{{fvGet.root}}spot/category/%e5%ae%bf%e6%b3%8a/">宿泊</a></li>
+                <li class="p-category-area__list__col"><a class="p-category  u-text-spot" href="{{fvGet.root}}spot/category/%e7%94%9f%e6%b4%bb/">生活</a></li>
+              </ul>
+            </div>
+          </div>
+          <ul class="c-flex">
+            <li class="u-w-4">
+              <a class="p-post" href="{{fvGet.root}}spot/%e4%b8%80%e8%a6%a7%e7%94%a8%e3%81%ab/">
+                <div class="p-post__thumb  u-mb-x-small"><img src="{{fvGet.images}}uploads/2020/03/no-image-260x190.jpg" srcset="{{fvGet.images}}uploads/2020/03/no-image.jpg 2x" alt=""></div>
+                <div class="p-post__title  u-700">一覧用に</div>
+
+              </a>
+            </li>
+            <li class="u-w-4">
+              <a class="p-post" href="{{fvGet.root}}spot/%e3%83%86%e3%82%b9%e3%83%882/">
+                <div class="p-post__thumb  u-mb-x-small"><img src="{{fvGet.images}}uploads/2020/03/no-image-260x190.jpg" srcset="{{fvGet.images}}uploads/2020/03/no-image.jpg 2x" alt=""></div>
+                <div class="p-post__title  u-700">テスト2</div>
+
+              </a>
+            </li>
+            <li class="u-w-4">
+              <a class="p-post" href="{{fvGet.root}}spot/test/">
+                <div class="p-post__thumb  u-mb-x-small"><img src="{{fvGet.images}}uploads/2020/03/no-image-260x190.jpg" srcset="{{fvGet.images}}uploads/2020/03/no-image.jpg 2x" alt=""></div>
+                <div class="p-post__title  u-700">test</div>
+
+              </a>
+            </li>
+            <li class="u-w-4">
+              <a class="p-post" href="{{fvGet.root}}spot/%e3%82%b9%e3%83%9d%e3%83%83%e3%83%88%e5%90%8d%e3%81%8c%e5%85%a5%e3%82%8a%e3%81%be%e3%81%99/">
+                <div class="p-post__thumb  u-mb-x-small"><img src="{{fvGet.images}}uploads/2020/04/258A1700-260x190.jpg" srcset="{{fvGet.images}}uploads/2020/04/258A1700-520x380.jpg 2x" alt=""></div>
+                <div class="p-post__title  u-700">スポット名が入ります</div>
+
+                <div class="p-post__date  u-text-gray-200  u-700">english</div>
+
+                <div class="p-post__data  p-post__spacer" title="住所"><span class="p-post__data__icon"><svg class="c-icon-pin  u-text-spot">
+                      <use xlink:href="#icon-pin"></use>
+                    </svg></span>熊本市中央区平成3-7-10</div>
+
+                <div class="p-post__data" title="営業時間">
+                  <span class="p-post__data__icon"><svg class="c-icon-clock  u-text-spot">
+                      <use xlink:href="#icon-clock"></use>
+                    </svg></span>
+                  9時00分～16時00分 </div>
+
+                <div class="p-post__data" title="定休日">
+                  <span class="p-post__data__icon"><svg class="c-icon-calendar  u-text-spot">
+                      <use xlink:href="#icon-calendar"></use>
+                    </svg></span>
+                  年中無休 </div>
+              </a>
+            </li>
+          </ul>
+        </section>
+      </div><!-- /.u-width-main -->
+
+      <div class="u-width-sub  u-ml-auto  u-pl-gutter">
+
+        <div class="p-weather  u-family-hx  u-text-secondary">2020.08.07.FRI <span class="p-weather__forecast"><svg class="c-icon-cloud"><use xlink:href="#icon-cloud"></use></svg> / 11&deg;</span></div>
+
+        <aside class="p-calendar-widget  u-mt-small">
+          <div class="p-calendar-widget__inner">
+            <h2 class="p-calendar-widget__title  p-text-clip-text  u-family-hx">＼ 8月のイベント情報 ／</h2>
+            <div class="p-calendar-widget__content  u-mt-smaller">
+              <table class="p-calendar-widget__table">
+                <thead>
+                  <tr>
+                    <th data-week="月">月</th>
+                    <th data-week="火">火</th>
+                    <th data-week="水">水</th>
+                    <th data-week="木">木</th>
+                    <th data-week="金">金</th>
+                    <th data-week="土">土</th>
+                    <th data-week="日">日</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                      1 </td>
+                    <td>
+                      2 </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      3 </td>
+                    <td>
+                      4 </td>
+                    <td>
+                      5 </td>
+                    <td>
+                      6 </td>
+                    <td>
+                      7 </td>
+                    <td>
+                      8 </td>
+                    <td>
+                      9 </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      10 </td>
+                    <td>
+                      11 </td>
+                    <td>
+                      12 </td>
+                    <td>
+                      13 </td>
+                    <td>
+                      14 </td>
+                    <td>
+                      15 </td>
+                    <td>
+                      16 </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      17 </td>
+                    <td>
+                      18 </td>
+                    <td>
+                      19 </td>
+                    <td>
+                      20 </td>
+                    <td>
+                      21 </td>
+                    <td>
+                      22 </td>
+                    <td>
+                      23 </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      24 </td>
+                    <td>
+                      25 </td>
+                    <td>
+                      26 </td>
+                    <td>
+                      27 </td>
+                    <td>
+                      28 </td>
+                    <td>
+                      29 </td>
+                    <td>
+                      30 </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      31 </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <a class="p-btn  p-btn--border  p-btn--more  u-w-12  u-mt-smaller" href="{{fvGet.root}}event/">イベントカレンダーを見る<svg class="c-icon-chevron-circle-right-solid  u-text-accent-symbol  u-ml-gutter">
+                <use xlink:href="#icon-chevron-circle-right-solid"></use>
+              </svg></a>
+          </div>
+        </aside>
+
+        <aside class="p-products-widget  u-mt-medium  u-family-hx">
+          <h2 class="p-products-widget__title"><span class="u-text-minamiaso">南阿蘇</span><span class="p-products-widget__title__emphasis  js-parser">認定商品</span></h2>
+          <a class="p-products-widget__post  u-pb-xx-small" href="{{fvGet.root}}products/%e3%81%8a%e3%81%84%e3%81%97%e3%81%84%e7%b4%85%e8%8c%b6/">
+            <div class="p-products-widget__post__thumb  u-mb-small"><img src="{{fvGet.images}}uploads/2020/04/67e426d2b63845d7f751c664dea0660e-260x190.jpg" srcset="{{fvGet.images}}uploads/2020/04/67e426d2b63845d7f751c664dea0660e-520x380.jpg 2x" alt=""></div>
+            <div class="p-products-widget__post__name">おいしい紅茶</div>
+
+            <div class="p-products-widget__post__english  u-text-gray-300">Delicious tea</div>
+          </a>
+          <a class="p-btn  p-btn--border  p-btn--more  u-mt-small  u-mr-auto  u-ml-auto" href="{{fvGet.root}}products/">一覧を見る<svg class="c-icon-chevron-circle-right-solid  u-text-accent-symbol  u-ml-gutter">
+              <use xlink:href="#icon-chevron-circle-right-solid"></use>
+            </svg></a>
+        </aside>
+      </div><!-- /.u-width-sub -->
+
+    </div><!-- /.c-flex -->
+  </div><!-- /.c-container-container -->
+</div><!-- /.u-bg-section-bg -->
+
+<section class="c-container-container  u-pt-xx-small  u-mt-large">
+  <header class="p-header  u-family-hx  u-mb-medium">
+    <div class="p-header__icon  u-text-white  u-bg-treasure"><svg class="p-header__icon__self  c-icon-oogi">
+        <use xlink:href="#icon-oogi"></use>
+      </svg></div>
+    <div class="p-header__hgroup">
+      <h2 class="p-header__title">みなみあその宝物</h2>
+      <span class="p-header__label  u-text-gray-300">regional tradition</span>
+    </div>
+    <div class="p-header__link"><a class="p-btn  p-btn--treasure  p-btn--more  u-text-white" href="{{fvGet.root}}treasure/">一覧を見る<svg class="c-icon-chevron-circle-right-solid  u-ml-gutter">
+          <use xlink:href="#icon-chevron-circle-right-solid"></use>
+        </svg></a></div>
+  </header>
+  <div class="p-category-area  u-family-hx  u-mb-medium  u-bg-treasure">
+    <div class="p-category-area__scroll  js-ps-x">
+      <ul class="p-category-area__list">
+        <li class="p-category-area__list__col"><a class="p-category  u-text-treasure" href="{{fvGet.root}}treasure/category/%e7%a5%ad%e3%82%8a/">祭り</a></li>
+        <li class="p-category-area__list__col"><a class="p-category  u-text-treasure" href="{{fvGet.root}}treasure/category/%e6%96%87%e5%8c%96/">文化</a></li>
+        <li class="p-category-area__list__col"><a class="p-category  u-text-treasure" href="{{fvGet.root}}treasure/category/%e6%98%a5/">春</a></li>
+        <li class="p-category-area__list__col"><a class="p-category  u-text-treasure" href="{{fvGet.root}}treasure/category/%e5%a4%8f/">夏</a></li>
+        <li class="p-category-area__list__col"><a class="p-category  u-text-treasure" href="{{fvGet.root}}treasure/category/%e7%a7%8b/">秋</a></li>
+        <li class="p-category-area__list__col"><a class="p-category  u-text-treasure" href="{{fvGet.root}}treasure/category/%e5%86%ac/">冬</a></li>
+        <li class="p-category-area__list__col"><a class="p-category  u-text-treasure" href="{{fvGet.root}}treasure/category/1%e6%9c%88/">1月</a></li>
+        <li class="p-category-area__list__col"><a class="p-category  u-text-treasure" href="{{fvGet.root}}treasure/category/2%e6%9c%88/">2月</a></li>
+        <li class="p-category-area__list__col"><a class="p-category  u-text-treasure" href="{{fvGet.root}}treasure/category/3%e6%9c%88/">3月</a></li>
+        <li class="p-category-area__list__col"><a class="p-category  u-text-treasure" href="{{fvGet.root}}treasure/category/4%e6%9c%88/">4月</a></li>
+        <li class="p-category-area__list__col"><a class="p-category  u-text-treasure" href="{{fvGet.root}}treasure/category/5%e6%9c%88/">5月</a></li>
+        <li class="p-category-area__list__col"><a class="p-category  u-text-treasure" href="{{fvGet.root}}treasure/category/6%e6%9c%88/">6月</a></li>
+        <li class="p-category-area__list__col"><a class="p-category  u-text-treasure" href="{{fvGet.root}}treasure/category/7%e6%9c%88/">7月</a></li>
+        <li class="p-category-area__list__col"><a class="p-category  u-text-treasure" href="{{fvGet.root}}treasure/category/8%e6%9c%88/">8月</a></li>
+        <li class="p-category-area__list__col"><a class="p-category  u-text-treasure" href="{{fvGet.root}}treasure/category/9%e6%9c%88/">9月</a></li>
+        <li class="p-category-area__list__col"><a class="p-category  u-text-treasure" href="{{fvGet.root}}treasure/category/10%e6%9c%88/">10月</a></li>
+        <li class="p-category-area__list__col"><a class="p-category  u-text-treasure" href="{{fvGet.root}}treasure/category/11%e6%9c%88/">11月</a></li>
+        <li class="p-category-area__list__col"><a class="p-category  u-text-treasure" href="{{fvGet.root}}treasure/category/12%e6%9c%88/">12月</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="c-full-width">
+    <div class="p-slider-container  c-cf" data-slider-standard-container="treasure">
+      <ul class="c-flex" data-slider-standard="treasure">
+        <li class="u-w-3">
+          <a class="p-post" href="{{fvGet.root}}treasure/%e3%82%bf%e3%82%a4%e3%83%88%e3%83%ab%e3%81%8c%e3%81%af%e3%81%84%e3%82%8a%e3%81%be%e3%81%99/">
+            <div class="p-post__thumb  u-mb-small"><img src="{{fvGet.images}}uploads/2020/03/no-image-260x190.jpg" srcset="{{fvGet.images}}uploads/2020/03/no-image.jpg 2x" alt=""></div>
+            <div class="p-post__title">タイトルがはいります</div>
+
+            <div class="p-post__body  p-post__spacer">
+              ここにテキストが入ります。ここにテキストが入ります。ここにテキストが入ります。ここにテキストが入ります。ここにテキストが入ります。ここにテキストが入ります。... </div>
+          </a>
+        </li>
+      </ul>
+      <button class="p-slider-btn  p-slider-btn--circle  p-slider-btn--prev  u-text-treasure" data-slider-standard-prev="treasure"><svg class="c-icon-chevron-circle-left-light">
+          <use xlink:href="#icon-chevron-circle-left-light"></use>
+        </svg></button>
+      <button class="p-slider-btn  p-slider-btn--circle  p-slider-btn--next  u-text-treasure" data-slider-standard-next="treasure"><svg class="c-icon-chevron-circle-right-light">
+          <use xlink:href="#icon-chevron-circle-right-light"></use>
+        </svg></button>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{# サブ（サイド） fvSet.subLayout を true で使用可能  #}
+{% block sub %}
+{% endblock %}
+
+
+{# メインコンテンツ外 - 下 #}
+{% block contentsOverBottom %}
+{% endblock %}
+
+
+{# フッターに追記など #}
+{% block addFooter %}
+{% endblock %}

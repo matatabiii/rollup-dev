@@ -1,15 +1,19 @@
 import json from '@rollup/plugin-json'
 import nodeResolve from '@rollup/plugin-node-resolve' // node_modules
-// import typescript from '@rollup/plugin-typescript' // TypeScript
+import replace from '@rollup/plugin-replace'
+import typescript from '@rollup/plugin-typescript' // TypeScript
 import commonjs from '@rollup/plugin-commonjs' // CommonJSモジュールをES6に変換
 import babel from '@rollup/plugin-babel' // Babel
 import { terser } from 'rollup-plugin-terser' // JS minfy
 import pkg from './package.json'
 import camelCase from 'lodash.camelcase'
 import upperFirst from 'lodash.upperfirst'
+// import builtins from 'rollup-plugin-node-builtins'
+// import globals from 'rollup-plugin-node-globals'
 
 // Scopeを除去する
 const moduleName = upperFirst(camelCase(pkg.name.replace(/^@.*\//, '')))
+const fileName = 'main.js'
 
 // ライブラリに埋め込むcopyright
 const banner = `/*!
@@ -19,20 +23,20 @@ const banner = `/*!
 */`
 
 export default {
-  input: 'src/js/index.js',
+  input: 'src/js/main.ts',
   output: [
     {
-      file: 'dist/assets/js/script.js',
+      file: 'dist/wordpress/wp-content/themes/minamiaso/assets/js/' + fileName,
       format: 'iife',
-      name: moduleName,
-      sourcemap: 'inline',
+      name: 'APPS', // moduleName
+      // sourcemap: 'inline',
       banner
     },
     {
-      file: 'dist/assets/js/script.js',
+      file: 'dist/wordpress/wp-content/themes/minamiaso/assets/js/' + fileName,
       format: 'iife',
-      name: moduleName,
-      banner,
+      name: 'APPS', // moduleName
+      // banner,
       plugins: [
         terser({
           output: {
@@ -52,9 +56,14 @@ export default {
   external: [...Object.keys(pkg.devDependencies || {})], // 開発用モジュールは含めない
   plugins: [
     json(),
-    nodeResolve(),
-    // typescript(),
+    nodeResolve({
+      browser: true
+    }),
+    typescript(),
     commonjs({ extensions: ['.ts', '.js'] }),
+    replace({
+      'process.env.NODE_ENV': JSON.stringify('production')
+    }),
     babel({
       babelHelpers: 'runtime', // 'bundled' | 'runtime' | 'inline' | 'external'
       exclude: 'node_modules/**'

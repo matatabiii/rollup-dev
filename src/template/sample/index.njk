@@ -1,0 +1,65 @@
+{%-
+  set fvSet = {
+    'theme': 'sample',
+    'page': 'sample',
+    'title': '内部ページ | ' + data.basename,
+    'description': false,
+    'heroParent': false,
+    'heroMain': '内部ページ',
+    'heroSub': false,
+    'heroBg': 'common/hero-common',
+    'subLayout': false,
+    'single': false,
+    'goolgle': false,
+    'canonical': 'sample/',
+    'ogtype': 'article'
+  }
+-%}
+
+{% extends '_modules/_layout.njk' %}
+
+{# cssやjsをheadに追記など #}
+{% block addHeader %}
+{% endblock %}
+
+
+{# メインコンテンツ外 - 上 #}
+{% block contentsOverTop %}
+{% endblock %}
+
+
+{# メインコンテンツ #}
+{% block contents %}
+<h1>パス関係</h1>
+<ul>
+  <li>
+    <h2>ルート</h2>
+    <p>{{fvGet.root}}</p>
+  </li>
+
+  <li>
+    <h2>画像</h2>
+    <p>{{fvGet.images}}</p>
+  </li>
+
+  <li>
+    <h2>メディア</h2>
+    <p>{{fvGet.media}}</p>
+  </li>
+</ul>
+{% endblock %}
+
+{# サブ（サイド） fvSet.subLayout を true で使用可能  #}
+{% block sub %}
+{% endblock %}
+
+
+{# メインコンテンツ外 - 下 #}
+{% block contentsOverBottom %}
+{%- include '_modules/_page-nav.njk' %}
+{% endblock %}
+
+
+{# フッターに追記など #}
+{% block addFooter %}
+{% endblock %}

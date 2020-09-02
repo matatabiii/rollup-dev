@@ -1,3 +1,4 @@
+import fs from 'fs'
 import { src, dest, series, parallel, watch, task } from 'gulp'
 import plumber from 'gulp-plumber'
 import notify from 'gulp-notify'
@@ -11,6 +12,7 @@ import browserSync from 'browser-sync'
 
 import Fiber from 'fibers'
 import dartSass from 'sass'
+import sassGlob from 'gulp-sass-glob'
 import sass from 'gulp-sass'
 import postcss from 'gulp-postcss'
 import cssnext from 'postcss-cssnext'
@@ -23,13 +25,76 @@ import svgstore from 'gulp-svgstore'
 import cheerio from 'gulp-cheerio'
 import template from 'gulp-template'
 
+import nunjucks from 'gulp-nunjucks-render'
+import data from 'gulp-data'
+import beautify from 'gulp-html-beautify'
+
+const NS = {
+  ASSETS: 'wordpress/wp-content/themes/minamiaso/assets', // assets
+  CSS: 'css',
+  SASS: 'sass',
+  JS: 'js',
+  IMAGES: 'images',
+  FONTS: 'fonts',
+  ICON: 'icon',
+  SVG: 'svg',
+  SPRITES: 'sprites',
+  TEMPLATE: 'template',
+  DIST: './dist',
+  SRC: './src',
+  ICONFILE: 'sprite.svg',
+  CSSFILENAME: 'main'
+}
+
+/* ビルド前 */
+const SRC = {}
+SRC.ROOT = `${NS.SRC}/`
+SRC.SASS = `${SRC.ROOT}${NS.SASS}/`
+SRC.JS = `${SRC.ROOT}${NS.JS}/`
+SRC.ICON = `${SRC.ROOT}${NS.ICON}/`
+SRC.TEMPLATE = `${SRC.ROOT}${NS.TEMPLATE}/`
+SRC.SPRITES = `${SRC.ROOT}${NS.SPRITES}/`
+
+/* ビルド後 */
+const DIST = {}
+DIST.ROOT = `${NS.DIST}/`
+DIST.ASSETS = `${DIST.ROOT}${NS.ASSETS}/`
+DIST.JS = `${DIST.ASSETS}${NS.JS}/`
+DIST.CSS = `${DIST.ASSETS}${NS.CSS}/`
+DIST.IMAGES = `${DIST.ASSETS}${NS.IMAGES}/`
+DIST.FONTS = `${DIST.ASSETS}${NS.FONTS}/`
+DIST.SVG = `${DIST.ASSETS}${NS.SVG}/`
+
+/* ---------------------- # ファイル構造 ログ ---------------------- */
+const dirLog = () => {
+  console.log(`
+  ---------- 【 ファイル構造 】 -----------
+  # ビルド前パス
+  - ルート【 ${SRC.ROOT} 】
+  - sass【 ${SRC.SASS} 】
+  - js【 ${SRC.JS} 】
+  - SVGスプライト【 ${SRC.ICON} 】
+  - テンプレートエンジン【 ${SRC.TEMPLATE} 】
+
+  # ビルド後
+  - ルート【 ${DIST.ROOT} 】
+  - アセット【 ${DIST.ASSETS} 】
+  - js【 ${DIST.JS} 】
+  - css【 ${DIST.CSS} 】
+  - images【 ${DIST.IMAGES} 】
+  - fonts【 ${DIST.FONTS} 】
+  - SVGスプライト出力【 ${DIST.SVG} 】
+  -------------------------------
+  `)
+}
+
 /* ---------------------- # BrowserSync ---------------------- */
 const browserSyncCreate = browserSync.create()
 
 const browserSyncServer = done => {
   browserSyncCreate.init({
     server: {
-      baseDir: './dist/'
+      baseDir: `${DIST.ROOT}`
     },
     port: 3000
   })
@@ -66,8 +131,9 @@ const jsProduction = async () => {
 /* ---------------------- # Sass ---------------------- */
 sass.compiler = dartSass
 const sassDevelopment = async () => {
-  src('./src/sass/**/*.scss')
-    .pipe(sourcemaps.init())
+  src(`${SRC.SASS}**/*.scss`)
+    // .pipe(sourcemaps.init())
+    .pipe(sassGlob())
     .pipe(plumber({ errorHandler: notify.onError(sass.logError) }))
     .pipe(
       sass({
@@ -85,15 +151,15 @@ const sassDevelopment = async () => {
         ]
       })
     ]))
-    .pipe(rename({ basename: 'style' }))
-    .pipe(sourcemaps.write())
-    .pipe(dest('./dist/assets/css/'))
+    .pipe(rename({ basename: `${NS.CSSFILENAME}` }))
+    // .pipe(sourcemaps.write())
+    .pipe(dest(`${DIST.CSS}`))
 
   browserSyncCreate.reload()
 }
 
 const sassProduction = async () => {
-  src('./src/sass/**/*.scss')
+  src(`${SRC.SASS}**/*.scss`)
     .pipe(
       sass({
         fiber: Fiber,
@@ -111,14 +177,14 @@ const sassProduction = async () => {
         ]
       })
     ]))
-    .pipe(rename({ basename: 'style' }))
+    .pipe(rename({ basename: `${NS.CSSFILENAME}` }))
     .pipe(postcss([cssnano({ autoprefixer: false })]))
-    .pipe(dest('./dist/assets/css/'))
+    .pipe(dest(`${DIST.CSS}`))
 }
 
 /* ---------------------- # SVG Sprite ---------------------- */
 const svgSprite = () => {
-  return src('./src/svg/**/*.svg')
+  return src(`${SRC.ICON}**/*.svg`)
     .pipe(plumber({
       errorHandler: notify.onError('Error: <%= error.message %>')
     }))
@@ -149,28 +215,52 @@ const svgSprite = () => {
         $('svg').append($svg)
 
         // _base.htmlを基に、index.htmlをルートに生成
-        src('./src/svg/_template.html')
+        src(`${SRC.ICON}_template.html`)
           .pipe(template({
             inlineSvg: $('svg'),
             symbols: symbols
           }))
           .pipe(rename('index.html'))
-          .pipe(dest('./dist/assets/svg/'))
+          .pipe(dest(`${DIST.SVG}`))
+          .pipe(dest(`${SRC.ICON}`))
       },
       parserOptions: {
         xmlMode: true
       }
     }))
-    .pipe(rename('sprite.svg'))
-    .pipe(dest('./dist/assets/svg/'))
+    .pipe(rename(`${NS.ICONFILE}`))
+    .pipe(dest(`${DIST.SVG}`))
+}
+
+/* ---------------------- # Nunjucks ---------------------- */
+const nunjucksTask = async () => {
+  src(`${SRC.TEMPLATE}**/*.njk`)
+    .pipe(
+      plumber({
+        errorHandler: notify.onError('\n' + 'Nunjucks に Error が存在します' + '\n' + '<%= error.message %>' + '\n')
+      })
+    )
+    .pipe(data(function () {
+      return require(`${SRC.TEMPLATE}_data/config.json`)
+    }))
+    .pipe(nunjucks({
+      path: `${SRC.TEMPLATE}`
+    }))
+    .pipe(beautify({
+      indent_size: 2
+    }))
+    .pipe(dest(`${DIST.ROOT}`))
+
+  browserSyncCreate.reload()
 }
 
 /* ---------------------- # Watch ---------------------- */
 const watching = () => {
-  watch('./src/js/**/*.js', series(jsDevelopment))
-  watch('./src/svg/**/*.svg', series(svgSprite))
-  watch('./src/sass/**/*.scss', series(sassDevelopment))
-  watch('./dist/**/*.(html|php)', series(browserSyncReload))
+  watch(`${SRC.JS}**/*.(js|ts)`, series(jsDevelopment))
+  watch(`${SRC.ICON}**/*.svg`, series(svgSprite))
+  watch(`${SRC.SASS}**/*.scss`, series(sassDevelopment))
+  watch(`${SRC.TEMPLATE}**/*.njk`, series(nunjucksTask))
+  watch(`${DIST.ROOT}**/*.(php)`, series(browserSyncReload))
 }
 
 /* ---------------------- # exports ---------------------- */
@@ -178,20 +268,23 @@ const watching = () => {
 exports.default = series(
   jsProduction,
   sassProduction,
-  svgSprite
+  svgSprite,
+  nunjucksTask
 )
 
 // 開発用
 exports.start = series(
+  nunjucksTask,
   jsDevelopment,
   sassDevelopment,
   svgSprite,
   browserSyncServer,
-  watching
+  watching,
+  dirLog
 )
 
 // 開発終了後
 exports.clean = cb => {
-  del(src('./dist'))
+  del(src(`${DIST.ROOT}`))
   cb()
 }
