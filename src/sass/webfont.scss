@@ -1,0 +1,86 @@
+@charset "utf-8";
+
+$font: "../fonts/";
+
+/* 源柔ゴシックP */
+@font-face {
+  font-family: "Gen-Jyuu-Gothic-p";
+  font-style: normal;
+  font-weight: 400;
+  src: local("源柔ゴシックP"), url($font + "GenJyuuGothic-P/Regular/GenJyuuGothic-P-Regular.woff") format("woff"),
+    url($font + "GenJyuuGothic-P/Regular/GenJyuuGothic-P-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Gen-Jyuu-Gothic-p";
+  font-style: normal;
+  font-weight: 500;
+  src: local("源柔ゴシックP Medium"), url($font + "GenJyuuGothic-P/Medium/GenJyuuGothic-P-Medium.woff") format("woff"),
+    url($font + "GenJyuuGothic-P/Medium/GenJyuuGothic-P-Medium.ttf") format("truetype");
+}
+
+// @font-face {
+//   font-family: "Gen-Jyuu-Gothic-p";
+//   font-style: normal;
+//   font-weight: 700;
+//   src: local("源柔ゴシックP"), url($font + "GenJyuuGothic-P/Bold/GenJyuuGothic-P-Bold.woff") format("woff"),
+//     url($font + "GenJyuuGothic-P/Bold/GenJyuuGothic-P-Bold.ttf") format("truetype");
+// }
+
+// @font-face {
+//   font-family: 'Noto Sans JP';
+//   font-style: normal;
+//   font-weight: 400;
+//   font-display: swap;
+//   src: local("Noto Sans JP"),
+//        url( $font + "SourceHanSansJP/SourceHanSansJP-Regular.woff2") format('woff2'),
+//        url( $font + "SourceHanSansJP/SourceHanSansJP-Regular.woff") format('woff');
+// }
+
+// @font-face {
+//   font-family: 'Noto Sans JP';
+//   font-style: normal;
+//   font-weight: 700;
+//   font-display: swap;
+//   src: local("Noto Sans JP"),
+//        url( $font + "SourceHanSansJP/SourceHanSansJP-Bold.woff2") format('woff2'),
+//        url( $font + "SourceHanSansJP/SourceHanSansJP-Bold.woff") format('woff');
+// }
+
+// @font-face {
+//   font-family: 'Noto Sans JP';
+//   font-style: normal;
+//   font-weight: 900;
+//   font-display: swap;
+//   src: local("Noto Sans JP"),
+//        url( $font + "SourceHanSansJP/SourceHanSansJP-Heavy.woff2") format('woff2'),
+//        url( $font + "SourceHanSansJP/SourceHanSansJP-Heavy.woff") format('woff');
+// }
+
+/* YakuHan */
+// @font-face {
+//   font-family: "YakuHanJP";
+//   font-style: normal;
+//   font-weight: 400;
+//   font-display: swap;
+//   src: url( $font + "YakuHan/YakuHanJP/YakuHanJP-Regular.woff2") format("woff2"),
+//        url( $font + "YakuHan/YakuHanJP/YakuHanJP-Regular.woff") format("woff");
+// }
+
+// @font-face {
+//   font-family: "YakuHanJP";
+//   font-style: normal;
+//   font-weight: 700;
+//   font-display: swap;
+//   src: url( $font + "YakuHan/YakuHanJP/YakuHanJP-Bold.woff2") format("woff2"),
+//   url( $font + "YakuHan/YakuHanJP/YakuHanJP-Bold.woff") format("woff");
+// }
+
+// @font-face {
+//   font-family: "YakuHanJP";
+//   font-style: normal;
+//   font-weight: 900;
+//   font-display: swap;
+//   src: url( $font + "YakuHan/YakuHanJP/YakuHanJP-Black.woff2") format("woff2"),
+//   url( $font + "YakuHan/YakuHanJP/YakuHanJP-Black.woff") format("woff");
+// }

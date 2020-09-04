@@ -54,8 +54,8 @@ const NS = {
   DIST: './dist',
   SRC: './src',
   ICONFILE: 'sprite.svg',
-  CSSFILENAME: 'main',
-  JSFILENAME: 'main'
+  CSSFILENAME: 'style',
+  JSFILENAME: 'script'
 }
 
 /* ビルド前 */
@@ -109,7 +109,8 @@ const browserSyncServer = done => {
     server: {
       baseDir: `${DIST.ROOT}`
     },
-    port: 3000
+    port: 3000,
+    open: 'external'
   })
   done()
 }
@@ -238,7 +239,7 @@ const sassDevelopment = async () => {
         }
       })
     ]))
-    .pipe(rename({ basename: `${NS.CSSFILENAME}` }))
+    // .pipe(rename({ basename: `${NS.CSSFILENAME}` }))
     // .pipe(sourcemaps.write())
     .pipe(dest(`${DIST.CSS}`))
 
@@ -268,7 +269,7 @@ const sassProduction = async () => {
         }
       })
     ]))
-    .pipe(rename({ basename: `${NS.CSSFILENAME}` }))
+    // .pipe(rename({ basename: `${NS.CSSFILENAME}` }))
     .pipe(postcss([cssnano({ autoprefixer: false })]))
     .pipe(dest(`${DIST.CSS}`))
 }
