@@ -331,7 +331,7 @@ const ejsTask = async () => {
         errorHandler: notify.onError('\n' + 'ejs に Error が存在します' + '\n' + '<%= error.message %>' + '\n')
       })
     )
-    .pipe(ejs({ fs }, {}))
+    .pipe(ejs({}, { rmWhitespace: true }))
     .pipe(beautify({
       indent_size: 2
     }))

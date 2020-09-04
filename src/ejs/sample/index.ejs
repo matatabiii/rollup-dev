@@ -1,22 +1,22 @@
 <%_
-const root = './'
+const root = '../'
 include(root + '_data/_require.ejs')
 
 /* ページ情報 */
 const data   = init({
   root       : root, // ルートディレクトリへの相対パス
-  title      : '内部ページタイトル', // ページタイトル
-  description: 'ディスクリプションが入ります', // ディスクリプション
-  slug       : '', // ページ情報判断するためのslug（default: home）
+  title      : 'サンプルページ', // ページタイトル
+  description: 'EJSテンプレートの使い方を紹介しています', // ディスクリプション
+  slug       : 'sample', // ページ情報判断するためのslug（default: home）
   pageType   : '', // ページタイプを判断（ default: page | single ）
-  file       : '', // カノニカルurl等に使用、htmlとしてレンダリングされた場合のルートからの実際ファイル名（index等は省略）
+  file       : 'sample/', // カノニカルurl等に使用、htmlとしてレンダリングされた場合のルートからの実際ファイル名（index等は省略）
   titleTag   : '', // titleを設定すると勝手にタイトルタグを作りますが、それを上書きする場合はこちらに
-  ogType     : 'website', // og:type（default:）
-  bodyClass  : '', // body追加したいclass
+  ogType     : '', // og:type（default:）
+  bodyClass  : 'sample-body', // body追加したいclass
   hero       : { // ヒーロー用
-    parent   : '', // 親ページタイトル等
-    // main  : '', // メインタイトル 省略することで titile を継承する
-    sub      : '', // 英字表記・サブタイトル等
+    parent   : 'EJS', // 親ページタイトル等
+    main     : 'サンプル', // メインタイトル 省略することで titile を継承する
+    sub      : 'sample', // 英字表記・サブタイトル等
     bgImage  : '' // 背景イメージファイル名（画像は assets/images/common/ に設置想定）
   }
 })
@@ -29,12 +29,13 @@ const data   = init({
 const fvGet = data.get(data)
 _%>
 
+
 <%_ fvGet.components.main = function (__append) { _%>
   メイン
 <%_ } _%>
 
 <%_
-  // fvGet.sideType = 'default' // サイドコンテンツを出力する場合はこれをコメントアウト
+  fvGet.sideType = 'default' // サイドコンテンツを出力する場合はこれをコメントアウト
   fvGet.components.side = function (__append) {
 _%>
   <%- // サイドコンテンツ

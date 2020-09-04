@@ -1,0 +1,23 @@
+<%#
+  components: head
+  グローバルに fvGet が使えます
+%><meta charset="<%- fvGet.head.charset %>">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title><%- fvGet.head.titleTag %></title><%if (fvGet.head.description) { %>
+<meta name="description" content="<%- fvGet.head.description %>">
+<% } %><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="format-detection" content="telephone=no">
+<meta name="author" content="<%- fvGet.head.author %>">
+
+<meta name="twitter:card" content="summary">
+<meta property="og:locale" content="<%- fvGet.head.og.locale %>">
+<meta property="og:title" content="<%- fvGet.head.titleTag %>"><% if (fvGet.head.description) { %>
+<meta property="og:description" content="<%- fvGet.head.description %>">
+<% } %><meta property="og:type" content="<%- fvGet.head.og.type %>">
+<meta property="og:image" content="<%- fvGet.head.og.image %>">
+<meta property="og:site_name" content="<%- fvGet.siteName %>"><% if (fvGet.head.og.url) { %>
+<meta property="og:url" content="<%- fvGet.head.og.url %>">
+<% } %><% if (fvGet.head.canonical) { %>
+<link rel="canonical" href="<%- fvGet.head.canonical %>">
+<% } %><link rel="icon" href="<%- fvGet.head.icon %>">
+<link rel="apple-touch-icon-precomposed" href="<%- fvGet.head.appleTouchIcon %>">

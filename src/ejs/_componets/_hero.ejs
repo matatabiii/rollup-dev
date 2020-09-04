@@ -1,0 +1,13 @@
+<%#
+  components: 内部ヒーロー
+  グローバルに fvGet が使えます
+%><% if (!_isHome()) { %>
+<div id="hero-page" data-component="hero">
+  <header id="hero-page-inner">
+    <<%- fvGet.tags.h1Hero %> id="hero-page-main"><%- fvGet.page.hero.main %></<%- fvGet.tags.h1Hero %>><% if (fvGet.page.hero.parent) { %>
+    <div id="hero-page-parent"><%- fvGet.page.hero.parent %></div><% } %><% if (fvGet.page.hero.sub) { %>
+    <div id="hero-page-sub"><%- fvGet.page.hero.sub %></div><% } %><% if (fvGet.page.hero.bgImage) { %>
+    <div id="hero-page-bgImage"><%- fvGet.page.hero.bgImage %></div><% } %>
+  </header>
+</div>
+<% } %>

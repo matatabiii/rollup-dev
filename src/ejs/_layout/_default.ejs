@@ -1,29 +1,70 @@
-<%# レイアウトファイル: デフォルトテンプレート %>
-<%
-%>
-
-
-<!DOCTYPE html>
-<html lang="ja">
+<%#
+  layout: デフォルトテンプレート
+  グローバルに fvGet が使えます
+%><!DOCTYPE html>
+<html class="no-js" lang="<%- fvGet.lang %>" prefix="og: http://ogp.me/ns#" data-root="<%- _getPath('root') %>" data-assets="<%- _getPath('assets') %>">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+<%- include('./../_componets/_head.ejs', { fvGet }) %>
+<link rel="dns-prefetch" href="https://kit.fontawesome.com">
+<link rel="dns-prefetch" href="https://fonts.googleapis.com">
+<link rel="dns-prefetch" href="https://www.googletagmanager.com">
+<link rel="stylesheet" href="<%- _getPath('css') + fvGet.fileName.style + fvGet.timestamp %>">
+<script>document.documentElement.classList.add('js'); document.documentElement.classList.remove('no-js');</script>
+<%#
+<script src="https://kit.fontawesome.com/de40bc85e4.js" crossorigin="anonymous"></script>
+<script>
+  WebFontConfig = {
+    custom: {
+      families: ['Gen-Jyuu-Gothic-p'],
+      urls: ['webfont.css']
+    },
+    timeout: 2000
+  };
+</script>
+%>
+<%_ if (_isComponent('head')) { _%>
+  <%_ _renderComponent('head', __append) _%>
+<%_ } _%>
 </head>
 <body>
-  <% if (typeof header !== 'undefined') { %>
-    <%- header(__append) %>
-  <% } else { %>
-    This is the default content
-  <% } %>
+  <div id="body" class="<%- fvGet.page.bodyClass %>">
 
-  <section class="left">
-    <%- typeof left !== 'undefined' ? left(__append) : null %>
-  </section>
+    <div id="header" data-component="header">
+    <%- // ヘッダー
+      include('./../_componets/_header.ejs', { fvGet })
+    %>
+    </div><!-- /#header -->
 
-  <section class="right">
-    <%- typeof right !== 'undefined' ? right(__append) : 'This is more content' %>
-  </section>
+    <div id="wrapper" data-namespace="<%- fvGet.page.slug %>">
+      <%- // 内部ヒーロー
+        include('./../_componets/_hero.ejs', { fvGet })
+      %>
 
+      <div id="container" data-component="container">
+        <%_ if (_isComponent('main')) { _%>
+        <div id="main" data-component="main">
+          <%_ _renderComponent('main', __append) _%>
+        </div><!-- /#main -->
+        <%_ } _%>
+
+        <%_ if (_isComponent('side') && fvGet.sideType) { _%>
+        <div id="side" data-component="side">
+          <%_ _renderComponent('side', __append) _%>
+        </div><!-- /#side -->
+        <%_ } _%>
+      </div><!-- /#container -->
+
+      <div id="footer" data-component="footer">
+      <%- // フッター
+        include('./../_componets/_footer.ejs', { fvGet })
+      %>
+      </div><!-- /#footer -->
+    </div><!-- /#wrapper -->
+  </div><!-- /#body -->
+
+  <script src="<%- _getPath('js') + fvGet.fileName.js + fvGet.timestamp %>"></script>
+  <%_ if (_isComponent('footer')) { %>
+    <%_ _renderComponent('footer', __append) _%>
+  <%_ } %>
 </body>
 </html>

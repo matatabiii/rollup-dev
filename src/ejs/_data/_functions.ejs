@@ -1,0 +1,250 @@
+<%#
+  # _config.ejs を元に適切なデータを出力する関数をまとめています
+  - init
+%>
+<%_
+  include( './_config.ejs' );
+
+  const getConfig = returnConfig()
+
+  // _config.ejs から取得したデータ
+  const ENV = getConfig.ENV
+  const WP_MODE = getConfig.WP_MODE
+  const IS_WP = getConfig.IS_WP
+  const PATH_MODE = getConfig.PATH_MODE
+  const IS_PUBLIC = getConfig.IS_PUBLIC
+  const config = getConfig.config
+  const name = getConfig.name
+
+  init = function (page) {
+    // サイトURL
+    let siteUrl = config.siteUrl.public
+
+    // 相対パス
+    const path = {
+      root: config.path.root,
+    }
+
+    const fileName = {
+      style: config.fileName.style,
+      js: config.fileName.js,
+    }
+
+    // 環境に応じたそれぞれのパスを決定
+    if (ENV === 'local') {
+      path.root = config.path.rootLocal
+      siteUrl = config.siteUrl.local
+      fileName.style = config.fileName.styleDev
+      fileName.js = config.fileName.jsDev
+    } else if (ENV === 'dev') {
+      path.root = config.path.rootDev
+      siteUrl = config.siteUrl.dev
+    }
+
+    // 絶対URL
+    path.absolute = siteUrl + path.root
+    path.absoluteAssets = path.absolute + name.assets + '/'
+    path.absoluteMedia = path.absolute + name.assets + '/' + name.media + '/'
+    path.absoluteImages = path.absolute + name.assets + '/' + name.images + '/'
+    path.absoluteCss = path.absolute + name.assets + '/' + name.css + '/'
+    path.absoluteJs = path.absolute + name.assets + '/' + name.js + '/'
+    path.absoluteSvg = path.absolute + name.assets + '/' + name.svg + '/'
+
+    // 絶対URLモード
+    if (PATH_MODE === 'absolute') {
+      path.root = path.absolute
+      path.assets = path.absoluteAssets
+      path.media = path.absoluteMedia
+      path.images = path.absoluteImages
+      path.css = path.absoluteCss
+      path.js = path.absoluteJs
+      path.svg = path.absoluteSvg
+    } else if (PATH_MODE === 'relative') {
+      path.root = page.root
+    }
+
+    path.assets = path.root + name.assets + '/'
+    path.media = path.assets + name.media + '/'
+    path.images = path.assets + name.images + '/'
+    path.css = path.assets + name.css + '/'
+    path.js = path.assets + name.js + '/'
+    path.svg = path.assets + name.svg + '/'
+    path.siteUrl = siteUrl
+
+    // head内metaタグ等
+    const head = {
+      title: config.siteName,
+      charset: config.charset,
+      description: config.description,
+      author: config.siteName,
+      canonical: true,
+      icon: path.absoluteImages + config.fileName.icon,
+      appleTouchIcon: path.absoluteImages + config.fileName.appleTouchIcon,
+      og: {
+        locale: 'ja_JP',
+        type: 'article',
+        image: path.absoluteImages + config.fileName.ogImage,
+        url: true,
+      }
+    }
+
+    const data = {
+      lang: config.lang,
+      siteName: config.siteName,
+      titleTemplate: config.titleTemplate,
+      wpMode: WP_MODE,
+      isWp: IS_WP,
+      fulldate: new Date().getYear() + '' + new Date().getMonth() + 1 + '' + new Date().getDate() + '' + new Date().getHours() + '' + new Date().getMinutes() + '' + new Date().getSeconds(),
+      mddate: new Date().getMonth() + 1 + '/' + new Date().getDate() + ' ' + new Date().getHours() + '',
+      root: config.path.root,
+      head: head,
+      path: path,
+      siteUrl: siteUrl,
+      page: page,
+      fileName: fileName,
+    }
+
+    const get = (data) => {
+      const _data = {
+        lang: data.lang,
+        siteName: data.siteName,
+        titleTemplate: data.titleTemplate,
+        wpMode: data.wpMode,
+        isWp: data.isWp,
+        fulldate: data.fulldate,
+        root: data.root,
+        fileName: data.fileName,
+        head: data.head,
+        path: data.path,
+        siteUrl: siteUrl,
+        mddate: data.mddate,
+        root: data.path.root,
+        assets: data.path.assets,
+        media: data.path.media,
+        images: data.path.images,
+        css: data.path.css,
+        js: data.path.js,
+        svg: data.path.svg,
+        absolute: data.path.absolute,
+        absoluteAssets: data.path.absoluteAssets,
+        absoluteMedia: data.path.absoluteMedia,
+        absoluteImages: data.path.absoluteImages,
+        absoluteCss: data.path.absoluteCss,
+        absoluteJs: data.path.absoluteJs,
+        absoluteSvg: data.path.absoluteSvg,
+        page: data.page,
+        tags: {},
+        components: {} // 各パーツを格納
+      }
+
+      // タイムスタンプ
+      _data.timestamp = '?v' + _data.fulldate
+
+      // ヒーロー用
+      if (!_data.page.hero) {
+        _data.page.hero = {
+          parent: '',
+          main: _data.page.title,
+          sub: '',
+          bgImage: ''
+        }
+      } else {
+        if (!_data.page.hero.main) _data.page.hero.main = _data.page.title
+      }
+
+      // テーマ管理
+      if (!_data.page.theme) {
+        _data.page.theme = 'default'
+      }
+
+      // 内部ページタイトルタグ用に調整
+      // _data.page.titleTag の指定がある場合はタイトルタグ用にそれを設定
+      if (_data.page.titleTag) {
+        _data.head.titleTag = _data.page.titleTag
+      } else {
+        _data.head.titleTag = _data.titleTemplate.replace('%s', _data.page.title)
+      }
+
+      _data.head.title = _data.page.title
+
+      // ディスクリプション
+      if (_data.page.description) {
+        data.head.description = _data.page.description
+      } else {
+        data.head.description = false
+      }
+
+      // カノニカル
+      if (_data.head.canonical) {
+        _data.head.canonical = _data.absolute + _data.page.file
+      }
+
+      // og:url
+      if (_data.head.og.url) {
+        _data.head.og.url = _data.absolute + _data.page.file
+      }
+
+      // og:type
+      if (_data.page.ogType) {
+        _data.head.og.type = _data.page.ogType
+      }
+
+      // slug
+      if (!_data.page.slug) {
+        _data.page.slug = 'home'
+      }
+
+      // pageType
+      if (!_data.page.pageType) {
+        _data.page.pageType = 'page'
+      }
+
+      // bodyClass
+      if (!_data.page.bodyClass) {
+        _data.page.bodyClass = ''
+      }
+
+      // ページタイプ判定
+      _isPageType = function (type) {
+        return _data.page.pageType === type
+      }
+
+      // コンポーネントの存在 例: _isComponent('header')
+      _isComponent = function (componentName) {
+        return typeof _data.components[componentName] !== 'undefined'
+      }
+
+      // コンポーネントのレンダリング 例: _renderComponent('header', __append)
+      _renderComponent = function (componentName, __append) {
+        return _data.components[componentName](__append)
+      }
+
+      // パス取得
+      _getPath = function (name) {
+        return _data.path[name] ? _data.path[name] : 'Error（_getPath）: 引数なし'
+      }
+
+      // トップページか
+      _isHome = function () {
+        return _data.page.slug === 'home'
+      }
+
+      // 2カラムレイアウトか
+      _isSideLayout = function () {
+        return typeof _data.components.side !== 'undefined'
+      }
+
+      // H1タグ管理（home）
+      _data.tags.h1Home = _isHome() ? 'h1' : 'p'
+
+      // H1タグ管理（hero）
+      _data.tags.h1Hero = _isPageType('single') ? 'p' : 'h1'
+
+      return _data
+    }
+
+    data.get = get
+
+    return data
+  }
+_%>
