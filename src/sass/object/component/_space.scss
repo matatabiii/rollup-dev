@@ -1,0 +1,91 @@
+/*////////////////////////////
+
+@component/space
+
+////////////////////////////*/
+// 【必須】variable, functions, mixins 読み込み
+@use '../../foundation/vars/variable' as *;
+@use '../../foundation/vars/functions' as *;
+@use '../../foundation/vars/mixins' as *;
+
+// 例: .c-st30
+// 例: .c-sb45
+// 例: .c-mr5
+// 例: .c-sl85
+.c- {
+  @each $key, $value in $space-map {
+    $breakSpace: $value;
+
+    @if $key == '25' {
+      $breakSpace: 20;
+    }
+
+    @if $key == '30' or $key == '35' {
+      $breakSpace: 25;
+    }
+
+    @if $key == '40' or $key == '45' {
+      $breakSpace: 30;
+    }
+
+    @if $key == '50' or $key == '55' or $key == '60' or $key == '65' {
+      $breakSpace: 35;
+    }
+
+    @if $key == '70' {
+      $breakSpace: 40;
+    }
+
+    @if $key == '75' or $key == '80' or $key == '85' or $key == '90' or $key == '95' or $key == '100' {
+      $breakSpace: 45;
+    }
+
+    &st#{$key} {
+      padding-top: rem($value);
+
+      @include break('sp') {padding-top: rem($breakSpace);}
+    }
+
+    &sr#{$key} {
+      padding-right: rem($value);
+
+      @include break('sp') {padding-right: rem($breakSpace);}
+    }
+
+    &sb#{$key} {
+      padding-bottom: rem($value);
+
+      @include break('sp') {padding-bottom: rem($breakSpace);}
+    }
+
+    &sl#{$key} {
+      padding-left: rem($value);
+
+      @include break('sp') {padding-left: rem($breakSpace);}
+    }
+
+    &mt#{$key} {
+      margin-top: rem($value);
+
+      @include break('sp') {margin-top: rem($breakSpace);}
+    }
+
+    &mb#{$key} {
+      margin-bottom: rem($value);
+
+      @include break('sp') {margin-bottom: rem($breakSpace);}
+    }
+
+    &mr#{$key} {
+      margin-right: rem($value);
+
+      @include break('sp') {margin-right: rem($breakSpace);}
+    }
+
+    &ml#{$key} {
+      margin-left: rem($value);
+
+      @include break('sp') {margin-left: rem($breakSpace);}
+    }
+  }
+}

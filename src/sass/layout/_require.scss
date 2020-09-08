@@ -1,0 +1,11 @@
+/*////////////////////////////
+
+@layout/require
+
+////////////////////////////*/
+// 【必須】variable, functions, mixins 読み込み
+@use '../foundation/vars/variable' as *;
+@use '../foundation/vars/functions' as *;
+@use '../foundation/vars/mixins' as *;
+
+// 本来ならば @use で一つ一つ読まなければならないが効率を優先し @import を使用

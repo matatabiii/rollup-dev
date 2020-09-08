@@ -1,0 +1,152 @@
+/*////////////////////////////
+
+@component/flex
+
+////////////////////////////*/
+// 【必須】variable, functions, mixins 読み込み
+@use '../../foundation/vars/variable' as *;
+@use '../../foundation/vars/functions' as *;
+@use '../../foundation/vars/mixins' as *;
+
+// flexレイアウトラッパー
+[class*='c-flex'] {
+  display: flex;
+  flex-wrap: wrap;
+
+  > * {
+    flex: 0 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 1px;
+    max-width: 100%;
+  }
+}
+
+.c-flex-fit {
+  > * {
+    flex-direction: row;
+  }
+}
+
+@mixin _flex($prefix: '') {
+  $flex-gutter: (
+    '1': 0,
+    '5': rem(5px),
+    '5_': rem(5px * 0.5),
+    '10': rem(10px),
+    '15': rem(15px),
+    '15_': rem(15px * 0.5),
+    '20': rem(20px),
+    '25': rem(25px),
+    '25_': rem(25px * 0.5),
+    '30': rem(30px),
+    '35': rem(35px),
+    '35_': rem(35px * 0.5),
+    '40': rem(40px),
+    '45': rem(45px),
+    '45_': rem(45px * 0.5),
+    '50': rem(50px),
+    '55': rem(55px),
+    '55_': rem(55px * 0.5),
+    '60': rem(60px),
+    '65': rem(65px),
+    '65_': rem(65px * 0.5),
+    '70': rem(70px),
+    '75': rem(75px),
+    '75_': rem(75px * 0.5),
+    '80': rem(80px),
+    '85': rem(85px),
+    '85_': rem(85px * 0.5),
+    '90': rem(90px),
+    '95': rem(95px),
+    '95_': rem(95px * 0.5),
+    '100': rem(100px),
+  );
+
+  @each $key, $val in $flex-gutter {
+    // 左右
+    .#{$prefix}c-flex-x#{$key} {
+      margin-left: -$val;
+      margin-right: -$val;
+
+      > * {
+        padding-left: $val;
+        padding-right: $val;
+      }
+    }
+
+    // 上下
+    .#{$prefix}c-flex-y#{$key} {
+      margin-top: -$val;
+      margin-bottom: -$val;
+
+      > * {
+        padding-top: $val;
+        padding-bottom: $val;
+      }
+    }
+  }
+}
+
+// カラムサイズ
+@mixin _c-col($prefix) {
+  @at-root {
+    .#{$prefix}c-w-12 {
+      width: 100%;
+    }
+    .#{$prefix}c-w-11 {
+      width: 91.66666667%;
+    }
+    .#{$prefix}c-w-10 {
+      width: 83.33333333%;
+    }
+    .#{$prefix}c-w-9 {
+      width: 75%;
+    }
+    .#{$prefix}c-w-8 {
+      width: 66.66666667%;
+    }
+    .#{$prefix}c-w-7 {
+      width: 58.33333333%;
+    }
+    .#{$prefix}c-w-6 {
+      width: 50%;
+    }
+    .#{$prefix}c-w-5col {
+      width: 20%;
+    }
+    .#{$prefix}c-w-5 {
+      width: 41.66666667%;
+    }
+    .#{$prefix}c-w-4 {
+      width: 33.33333333%;
+    }
+    .#{$prefix}c-w-3 {
+      width: 25%;
+    }
+    .#{$prefix}c-w-2 {
+      width: 16.66666667%;
+    }
+    .#{$prefix}c-w-1 {
+      width: 8.33333333%;
+    }
+    .#{$prefix}c-w-auto {
+      width: auto;
+    }
+  }
+}
+
+@include _flex('');
+@include _c-col('');
+
+@each $screen in $screen-list {
+  $prefix: str-slice($screen, 0, 1);
+  @include break($screen) {
+    @include _flex('#{$prefix}\\:');
+    @include _c-col('#{$prefix}\\:');
+  }
+  @include over($screen) {
+    @include _flex('#{$prefix}\\:');
+    @include _c-col('#{to-upper-case($prefix)}\\:');
+  }
+}

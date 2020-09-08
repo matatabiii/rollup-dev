@@ -1,0 +1,101 @@
+/*////////////////////////////
+
+@基本設定
+
+////////////////////////////*/
+@use "sass:map"; // sassの機能
+
+// 【必須】variable, functions, mixins 読み込み
+@use "../vars/variable" as *;
+@use "../vars/functions" as *;
+@use "../vars/mixins" as *;
+
+@include break(width('max')) {/**/}
+
+@include break(width('desktop')) {/**/}
+
+@include break('tablet') {/**/}
+
+@include break('sp') {/**/}
+
+@include break('xs') {/**/}
+
+@include over('xs') {/**/}
+
+@include over('sp') {/**/}
+
+@include over('tablet') {/**/}
+
+@include over(width('desktop')) {/**/}
+
+@include over(width('max')) {/**/}
+
+:root {
+  $i: 0;
+  @each $screen in $screen-list {
+    @if 0 == $i {
+      --screen: "#{$screen}";
+    } @else {
+      @include break($screen) {
+        --screen: "#{$screen}";
+      }
+    }
+    $i: $i + 1;
+  }
+
+  @each $key, $family in $family-map {
+    --family-#{$key}: #{$family};
+  }
+
+  @each $key, $color in $color-map {
+    --color-#{$key}: #{$color};
+  }
+}
+
+html {
+  // font-size: 62.5%;
+  background-color: #fff;
+}
+
+body {
+  font-family: family("sans");
+  padding: $gutter;
+  box-sizing: border-box;
+  font-feature-settings: normal;
+  font-weight: 400;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: rem(16);
+}
+
+// form parts
+input:not([type="radio"]):not([type="checkbox"]):not([type="file"]):not([type="submit"]):not([type="reset"]):not([type="range"]):not([type="color"]),
+textarea {
+  border: 1px solid #999999;
+  background-color: #ffffff;
+  outline: none !important;
+  padding: 0 10px;
+  border-radius: 0 !important;
+  transition: border-color 0.35s ease-in-out 0s, box-shadow 0.35s ease-in-out 0s;
+}
+
+[type="file"] {
+  cursor: pointer !important;
+}
+
+[type="radio"] {
+  border-radius: 49.9%;
+}
+
+[type="radio"],
+[type="checkbox"] {
+  flex: 0 0 auto;
+}
+
+[class] {
+  &[type="radio"],
+  &[type="checkbox"] {
+    margin-right: 3px;
+  }
+}
