@@ -6,9 +6,12 @@
 @use "sass:map"; // sassの機能
 @use "./family";
 
+$text-decoration-static: none !default;
+$text-decoration-dynamic: underline !default;
+
 $font-size: 16px !default;
 
-$gutter: 15px !default;
+$gutter: 20px !default;
 
 // レスポンシブ変化のスクリーンのリスト (実数は $width-map にマッチする値を使用する)
 $screen-list: ("tablet", "sp", "xs") !default;
@@ -62,18 +65,18 @@ $color-map: (
 ) !default;
 
 // @Function margin("medium")
-// @Utility  .u-m-small, .u-mt-small, .u-mr-small, .u-mb-small, .u-ml-small
+// @Utility  .u-m-s, .u-mt-s, .u-mr-s, .u-mb-s, .u-ml-s
 $margin-map: (
   "gutter": $gutter,
-  "xx-small": 3px,
-  "x-small": 7px,
-  "small": 10px,
-  "smaller": 20px,
-  "medium": 30px,
-  "larger": 40px,
-  "large": 50px,
-  "x-large": 70px,
-  "xx-large": 90px,
+  "xxs": 3px,
+  "xs": 7px,
+  "s": 10px,
+  "ms": 20px,
+  "m": 30px,
+  "lm": 40px,
+  "l": 50px,
+  "xl": 70px,
+  "xxl": 90px,
 ) !default;
 
 // @Function radius("small")
@@ -84,7 +87,7 @@ $radius-map: (
   "large": 12px,
 ) !default;
 
-// @Function index("header")
+// @Function z-index("header")
 $index-list: ("nav", "content", "header", "drawer", "loading", "debug") !default;
 
 // @Function space("50")

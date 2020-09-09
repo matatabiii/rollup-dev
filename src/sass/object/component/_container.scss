@@ -1,0 +1,40 @@
+/*////////////////////////////
+
+@component/container
+
+.c-container
+.c-container-just
+.c-container-max-just
+
+////////////////////////////*/
+// 【必須】variable, functions, mixins 読み込み
+@use '../../foundation/vars/variable' as *;
+@use '../../foundation/vars/functions' as *;
+@use '../../foundation/vars/mixins' as *;
+
+[class*="c-container"] {
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+
+  &:not([class*="-just"]) {
+    padding-left: $gutter;
+    padding-right: $gutter;
+  }
+}
+
+@each $key, $val in $width-map {
+  $prefix: '-#{$key}';
+
+  @if $key == 'container' {
+    $prefix: '';
+  }
+
+  .c-container#{$prefix} {
+    width: $val + $gutter * 2;
+
+    &-just {
+      width: $val;
+    }
+  }
+}

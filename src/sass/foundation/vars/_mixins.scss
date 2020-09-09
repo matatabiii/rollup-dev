@@ -191,7 +191,7 @@
   $decoration: $text-decoration-static
 ) {
   @at-root {
-    @include _action-closure(
+    @include action-closure(
       $pseudoClass,
       $isPseudoNot,
       $isSpNot,
@@ -339,12 +339,12 @@
 
   @if true == $reverse {
     text-decoration: $text-decoration-dynamic #{$_important};
-    @include _action($supportAttr: $supportType, $decoration: $dynamic) {
+    @include action($supportAttr: $supportType, $decoration: $dynamic) {
       text-decoration: $text-decoration-static #{$_important};
     }
   } @else {
     text-decoration: $text-decoration-static #{$_important};
-    @include _action($supportAttr: $supportType, $decoration: $dynamic) {
+    @include action($supportAttr: $supportType, $decoration: $dynamic) {
       text-decoration: $text-decoration-dynamic #{$_important};
     }
   }
@@ -378,17 +378,24 @@
 /// @param {number} $width    横幅
 /// @param {string} $property プロパティ名
 /// @param {number} $gutter   溝の値
-@mixin container($width: width("container"), $property: "max-width", $gutter: $gutter) {
+/// @param {boolean}   $jsut     $gutterを含めた幅か、ジャストサイズか
+@mixin container($width: width("container"), $property: "width", $gutter: $gutter, $just: false) {
   display: block;
   margin-right: auto;
   margin-left: auto;
-  padding-right: rem($gutter);
-  padding-left: rem($gutter);
+
+  $padding: $gutter + $gutter;
+
+  @if $just == false {
+    padding-right: $gutter;
+    padding-left: $gutter;
+    $padding: 0px;
+  }
 
   @if $property == "max-width" {
-    max-width: calc(#{$width} + #{_rem($gutter)} + #{_rem($gutter)});
+    max-width: $width + $padding
   } @else if $property == "width" {
-    width: calc(#{$width} + #{_rem($gutter)} + #{_rem($gutter)});
+    width: $width + $padding;
     max-width: 100%;
   }
 }
@@ -481,10 +488,6 @@
 /// @param {nunmber} $weight font-wegiht
 @mixin placeholder ($color, $weight) {
   &::-webkit-input-placeholder {
-    color: $color;
-    font-weight: $weight;
-  }
-  &::-ms-input-placeholder {
     color: $color;
     font-weight: $weight;
   }

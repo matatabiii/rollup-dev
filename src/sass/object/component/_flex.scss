@@ -2,6 +2,11 @@
 
 @component/flex
 
+.c-flex
+  .c-col-6
+  S:c-col-4
+  T:c-col-2
+
 ////////////////////////////*/
 // 【必須】variable, functions, mixins 読み込み
 @use '../../foundation/vars/variable' as *;

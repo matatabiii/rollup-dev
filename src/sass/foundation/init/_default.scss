@@ -99,3 +99,13 @@ textarea {
     margin-right: 3px;
   }
 }
+
+input[type="url"],
+input[type="tel"],
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="password"],
+textarea {
+  @include placeholder(#b2b8b8, 500);
+}

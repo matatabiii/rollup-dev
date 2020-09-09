@@ -1,0 +1,177 @@
+/*////////////////////////////
+
+@utility/utility
+
+////////////////////////////*/
+// 【必須】variable, functions, mixins 読み込み
+@use '../../foundation/vars/variable' as *;
+@use '../../foundation/vars/functions' as *;
+@use '../../foundation/vars/mixins' as *;
+
+// media
+@media screen { .u-screen-hidden { display: none !important; } }
+@media print  { .u-print-hidden  { display: none !important; } }
+
+// 子を持たない要素（空要素）
+.u-empty:empty { display: none !important; }
+
+// アンチエイリアス
+.u-font-smoothing {
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+}
+
+// アンチエイリアス - none
+.u-font-smoothing-n {
+  -webkit-font-smoothing: subpixel-antialiased !important;
+  -moz-osx-font-smoothing: auto !important;
+}
+
+// font-weight
+.u-100 { font-weight: 100 !important; }
+.u-200 { font-weight: 200 !important; }
+.u-300 { font-weight: 300 !important; }
+.u-400 { font-weight: 400 !important; }
+.u-500 { font-weight: 500 !important; }
+.u-600 { font-weight: 600 !important; }
+.u-700 { font-weight: 700 !important; }
+.u-800 { font-weight: 800 !important; }
+.u-900 { font-weight: 900 !important; }
+
+// font-style
+.u-normal { font-style: normal !important; }
+.u-italic { font-style: italic !important; }
+
+// font-feature-settings
+.u-feature-palt   { font-feature-settings: "palt" 1 !important; }
+.u-feature-normal { font-feature-settings: normal !important; }
+
+// color
+@each $key, $color in $color-map {
+  .u-color-#{$key} { color: color($key) !important; }
+  .u-bg-#{$key} { background-color: color($key) !important; }
+}
+
+// font-family
+@each $key, $family in $family-map {
+  .u-family-#{$key} { font-family: family($key) !important; }
+}
+
+// indent
+.u-indent { text-indent: 1em !important; }
+
+// white-space
+.u-nowrap   { white-space: nowrap   !important; }
+.u-pre      { white-space: pre      !important; }
+.u-nowrap   { white-space: nowrap   !important; }
+.u-pre-wrap { white-space: pre-wrap !important; }
+.u-pre-line { white-space: pre-line !important; }
+
+@mixin _utility($prefix: "") {
+  // align
+  .#{$prefix}u-textleft    { text-align: left    !important; }
+  .#{$prefix}u-textcenter  { text-align: center  !important; }
+  .#{$prefix}u-textright   { text-align: right   !important; }
+  .#{$prefix}u-textjustify { text-align: justify !important; }
+
+  // underline
+  .#{$prefix}u-underline { text-decoration: underline !important; }
+
+  // overflow
+  .#{$prefix}u-oh { overflow: hidden !important; }
+
+  // padding
+  .#{$prefix}u-pl-less { padding-left: 0 !important; }
+  .#{$prefix}u-pt-less { padding-top: 0 !important; }
+  .#{$prefix}u-pr-less { padding-right: 0 !important; }
+  .#{$prefix}u-pb-less { padding-bottom: 0 !important; }
+
+  // margin
+  .#{$prefix}u-ml-less { margin-left: 0 !important; }
+  .#{$prefix}u-mt-less { margin-top: 0 !important; }
+  .#{$prefix}u-mr-less { margin-right: 0 !important; }
+  .#{$prefix}u-mb-less { margin-bottom: 0 !important; }
+  .#{$prefix}u-ml-auto { margin-left: auto !important; }
+  .#{$prefix}u-mt-auto { margin-top: auto !important; }
+  .#{$prefix}u-mr-auto { margin-right: auto !important; }
+  .#{$prefix}u-mb-auto { margin-bottom: auto !important; }
+  @each $key, $margin in $margin-map {
+    .#{$prefix}u-ml-#{$key}  { margin-left:   rem($margin) !important; }
+    .#{$prefix}u-mt-#{$key}  { margin-top:    rem($margin) !important; }
+    .#{$prefix}u-mr-#{$key}  { margin-right:  rem($margin) !important; }
+    .#{$prefix}u-mb-#{$key}  { margin-bottom: rem($margin) !important; }
+    .#{$prefix}u-_ml-#{$key} { margin-left:   rem(-$margin) !important; }
+    .#{$prefix}u-_mt-#{$key} { margin-top:    rem(-$margin) !important; }
+    .#{$prefix}u-_mr-#{$key} { margin-right:  rem(-$margin) !important; }
+    .#{$prefix}u-_mb-#{$key} { margin-bottom: rem(-$margin) !important; }
+  }
+
+  // radius
+  .#{$prefix}u-radius-less { border-radius: 0 !important; }
+  @each $key, $radius in $radius-map {
+    .#{$prefix}u-radius-#{$key} { border-radius: rem($radius) !important; }
+  }
+
+  // hidden
+  .#{$prefix}u-hidden { display: none !important; }
+
+  // flex-direction
+  .#{$prefix}u-row            { flex-direction: row !important; }
+  .#{$prefix}u-row-reverse    { flex-direction: row-reverse !important; }
+  .#{$prefix}u-column         { flex-direction: column !important; }
+  .#{$prefix}u-column-reverse { flex-direction: column-reverse !important; }
+
+  // flex-wrap
+  .#{$prefix}u-wrap         { flex-wrap: wrap !important; }
+  .#{$prefix}u-wrap-no      { flex-wrap: nowrap !important; }
+  .#{$prefix}u-wrap-reverse { flex-wrap: wrap-reverse !important; }
+
+  // align-self
+  .#{$prefix}u-self-start  { align-self: flex-start !important; }
+  .#{$prefix}u-self-center { align-self: center !important; }
+  .#{$prefix}u-self-end    { align-self: flex-end !important; }
+
+  // align-items
+  .#{$prefix}u-items-start  { align-items: flex-start !important; }
+  .#{$prefix}u-items-center { align-items: center !important; }
+  .#{$prefix}u-items-end    { align-items: flex-end !important; }
+
+  // justify-content
+  .#{$prefix}u-justify-start   { justify-content: flex-start !important; }
+  .#{$prefix}u-justify-center  { justify-content: center !important; }
+  .#{$prefix}u-justify-end     { justify-content: flex-end !important; }
+  .#{$prefix}u-justify-between { justify-content: space-between !important; }
+  .#{$prefix}u-justify-around  { justify-content: space-around !important; }
+
+  .#{$prefix}u-flex-01auto    { flex: 0 1 auto !important; }
+  .#{$prefix}u-flex-1         { flex: 1 1 0%   !important; }
+  .#{$prefix}u-flex-11auto    { flex: 1 1 auto !important; }
+  .#{$prefix}u-flex-00auto    { flex: 0 0 auto !important; }
+
+  // order
+  .#{$prefix}u-order-_1  { order: -1 !important; }
+  .#{$prefix}u-order-1  { order: 1 !important; }
+  .#{$prefix}u-order-2  { order: 2 !important; }
+  .#{$prefix}u-order-3  { order: 3 !important; }
+  .#{$prefix}u-order-4  { order: 4 !important; }
+  .#{$prefix}u-order-5  { order: 5 !important; }
+  .#{$prefix}u-order-6  { order: 6 !important; }
+
+  // width 指定なし
+  .#{$prefix}u-w-auto { width: auto !important; }
+
+  // width full
+  .#{$prefix}u-w-full { width: 100% !important; }
+}
+
+@include _utility;
+
+@each $screen in $screen-list {
+  $prefix: str-slice($screen, 0, 1);
+  @include break($screen) {
+    @include _utility("#{$prefix}\\:");
+  }
+  @include over($screen) {
+    @include _utility("#{to-upper-case($prefix)}\\:");
+  }
+}

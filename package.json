@@ -26,6 +26,7 @@
   "homepage": "https://github.com/matatabiii/rollup-dev#readme",
   "devDependencies": {
     "@babel/core": "^7.10.5",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/plugin-transform-runtime": "^7.10.5",
     "@babel/preset-env": "^7.10.4",
     "@babel/register": "^7.10.5",
@@ -35,6 +36,7 @@
     "@rollup/plugin-node-resolve": "^8.4.0",
     "@rollup/plugin-replace": "^2.3.3",
     "@rollup/plugin-typescript": "^5.0.2",
+    "autoprefixer": "^9.8.6",
     "babel-loader": "^8.1.0",
     "browser-sync": "^2.26.10",
     "cross-env": "^7.0.2",
@@ -65,7 +67,6 @@
     "gulp-template": "^5.0.0",
     "lodash.camelcase": "^4.3.0",
     "lodash.upperfirst": "^4.3.1",
-    "postcss-cssnext": "^3.1.0",
     "postcss-gap-properties": "^2.0.0",
     "react-is": "^16.13.1",
     "rollup": "^2.22.1",
@@ -79,7 +80,9 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.11.0",
+    "@babel/runtime-corejs3": "^7.11.2",
     "axios": "^0.19.2",
+    "core-js": "^3.6.5",
     "css-vars-ponyfill": "^2.3.2",
     "es6-promise": "^4.2.8",
     "formdata-polyfill": "^3.0.20",

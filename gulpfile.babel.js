@@ -6,12 +6,12 @@ import rename from 'gulp-rename'
 // import sourcemaps from 'gulp-sourcemaps'
 import del from 'del'
 import pkg from './package.json'
-import camelCase from 'lodash.camelcase'
-import upperFirst from 'lodash.upperfirst'
+// import camelCase from 'lodash.camelcase'
+// import upperFirst from 'lodash.upperfirst'
 
 import { rollup } from 'rollup'
-import rollupConfig from './rollup.config.js'
-import rollupTypescript from '@rollup/plugin-typescript' // TypeScript
+// import rollupConfig from './rollup.config.js'
+// import rollupTypescript from '@rollup/plugin-typescript' // TypeScript
 import json from '@rollup/plugin-json'
 import nodeResolve from '@rollup/plugin-node-resolve' // node_modules
 import replace from '@rollup/plugin-replace'
@@ -26,7 +26,8 @@ import dartSass from 'sass'
 import sassGlob from 'gulp-sass-glob'
 import sass from 'gulp-sass'
 import postcss from 'gulp-postcss'
-import cssnext from 'postcss-cssnext'
+// import cssnext from 'postcss-cssnext'
+import autoprefixer from 'autoprefixer'
 import mqpacker from 'css-mqpacker'
 import cssnano from 'cssnano'
 import postcssGapProperties from 'postcss-gap-properties'
@@ -55,7 +56,8 @@ const NS = {
   SRC: './src',
   ICONFILE: 'sprite.svg',
   CSSFILENAME: 'style',
-  JSFILENAME: 'script'
+  JSFILENAME: 'script',
+  JSENTRYFILENAME: 'entry'
 }
 
 /* ビルド前 */
@@ -128,8 +130,9 @@ const browserSyncReload = async () => {
 //   Released under the ${pkg.license} License.
 // */`
 
-const moduleName = upperFirst(camelCase(pkg.name.replace(/^@.*\//, '')))
+// const moduleName = upperFirst(camelCase(pkg.name.replace(/^@.*\//, '')))
 const rollupDistfileName = NS.JSFILENAME + '.js'
+const rollupEntryfileName = NS.JSENTRYFILENAME + '.js'
 
 // ライブラリに埋め込むcopyright
 // const banner = `/*!
@@ -141,14 +144,14 @@ const rollupDistfileName = NS.JSFILENAME + '.js'
 // pluginsは変数に打ち込むとウォッチでコンパイルされなくなる...
 const jsDevelopment = async (cb) => {
   const bundle = await rollup({
-    input: rollupConfig.input,
+    input: SRC.JS + rollupEntryfileName,
     external: [...Object.keys(pkg.devDependencies || {})], // 開発用モジュールは含めない
     plugins: [
       json(),
       nodeResolve({
         browser: true
       }),
-      rollupTypescript(),
+      // rollupTypescript(),
       commonjs({ extensions: ['.ts', '.js'] }),
       replace({
         'process.env.NODE_ENV': JSON.stringify('production')
@@ -172,14 +175,14 @@ const jsDevelopment = async (cb) => {
 
 const jsProduction = async () => {
   const bundle = await rollup({
-    input: rollupConfig.input,
+    input: SRC.JS + rollupEntryfileName,
     external: [...Object.keys(pkg.devDependencies || {})], // 開発用モジュールは含めない
     plugins: [
       json(),
       nodeResolve({
         browser: true
       }),
-      rollupTypescript(),
+      // rollupTypescript(),
       commonjs({ extensions: ['.ts', '.js'] }),
       replace({
         'process.env.NODE_ENV': JSON.stringify('production')
@@ -217,7 +220,6 @@ const jsProduction = async () => {
 sass.compiler = dartSass
 const sassDevelopment = async () => {
   src(`${SRC.SASS}**/*.scss`)
-    // .pipe(sourcemaps.init())
     .pipe(sassGlob())
     .pipe(plumber({ errorHandler: notify.onError(sass.logError) }))
     .pipe(
@@ -229,18 +231,10 @@ const sassDevelopment = async () => {
     .pipe(postcss([
       mqpacker(),
       postcssGapProperties(),
-      cssnext({
-        browsers: [
-          'last 2 versions',
-          'ie >= 11'
-        ],
-        features: {
-          customProperties: false
-        }
+      autoprefixer({
+        grid: true
       })
     ]))
-    // .pipe(rename({ basename: `${NS.CSSFILENAME}` }))
-    // .pipe(sourcemaps.write())
     .pipe(dest(`${DIST.CSS}`))
 
   browserSyncCreate.reload()
@@ -259,17 +253,10 @@ const sassProduction = async () => {
     .pipe(postcss([
       mqpacker(),
       postcssGapProperties(),
-      cssnext({
-        browsers: [
-          'last 2 versions',
-          'ie >= 11'
-        ],
-        features: {
-          customProperties: false
-        }
+      autoprefixer({
+        grid: true
       })
     ]))
-    // .pipe(rename({ basename: `${NS.CSSFILENAME}` }))
     .pipe(postcss([cssnano({ autoprefixer: false })]))
     .pipe(dest(`${DIST.CSS}`))
 }

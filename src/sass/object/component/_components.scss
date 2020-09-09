@@ -1,0 +1,106 @@
+/*////////////////////////////
+
+@component/components
+
+////////////////////////////*/
+// 【必須】variable, functions, mixins 読み込み
+@use '../../foundation/vars/variable' as *;
+@use '../../foundation/vars/functions' as *;
+@use '../../foundation/vars/mixins' as *;
+
+// overflow
+.c-of-hidden {
+  overflow: hidden;
+}
+
+//改行をフレーズごとにいい感じに
+.c-phrase {
+  display: inline-block;
+}
+.c-ib {
+  display: inline-block;
+}
+
+// 要素幅で中央表示
+.c-center {
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+  border-collapse: separate;
+}
+
+// フェード
+.c-action-fade {
+  transition: opacity 0.3s;
+
+  @include action {
+    opacity: 0.75;
+  }
+}
+
+// 溝
+.c-gutter {
+  padding-right: rem($gutter);
+  padding-left: rem($gutter);
+}
+
+// アイコン
+[class*="c-icon"] {
+  overflow: visible;
+  display: inline;
+  fill: currentColor;
+  stroke-width: 0;
+  stroke: currentColor;
+  position: relative;
+  font-size: inherit;
+  vertical-align: -0.125em;
+  text-indent: 0;
+  flex: 0 0 auto;
+}
+
+// クリアーフィックス
+.c-cf {
+  @include cf;
+}
+
+// 動画
+.c-movie {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+
+  > * {
+    border: none;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  // .c-movie--4x3
+  &--4x3 {
+    padding-bottom: 3 / 4 * 100%; // 75%
+  }
+
+  // .c-movie--16x9
+  &--16x9 {
+    padding-bottom: 9 / 16 * 100%; // 56.25%
+  }
+}
+
+/**
+ * # アンダーライン付きリンクにする
+ */
+ .c-anchor {
+  color: color("theme");
+  text-decoration: underline;
+
+  [class].c-icon {
+    vertical-align: -.15em;
+  }
+
+  @include action {
+    text-decoration: none;
+  }
+}
