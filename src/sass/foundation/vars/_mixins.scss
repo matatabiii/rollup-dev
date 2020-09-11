@@ -14,7 +14,7 @@
 /// @param {string}         $direction 横か縦か両方か
 @mixin break($screen, $direction: width) {
   $screen: screen-match($screen);
-  $value: em($screen - 1);
+  $value: $screen - 0.02;
   @if (width == $direction or height == $direction) {
     @media screen and (max-#{$direction}: $value) {
       @content;
@@ -31,7 +31,7 @@
 /// @param {string}         $direction 横か縦か両方か
 @mixin over($screen, $direction: width) {
   $screen: screen-match($screen);
-  $value: em($screen);
+  $value: $screen;
   @if (width == $direction or height == $direction) {
     @media screen and (min-#{$direction}: $value) {
       @content;
@@ -111,6 +111,8 @@
 
   @if $size {
     $_size: #{$size};
+  } @else {
+    $_size: contain;
   }
 
   @if $repeat {
@@ -131,13 +133,13 @@
     $_y: 0;
   }
 
-  background-image: url($_src);
-  background-repeat: $_repeat;
-  background-position: $_x $_y;
+  background: url($_src) $_repeat $_x $_y/$_size;
+  // background-repeat: $_repeat;
+  // background-position: $_x $_y;
 
-  @if $size {
-    background-size: $_size;
-  }
+  // @if $size {
+  //   background-size: $_size;
+  // }
 
   @if $retina {
     @if $size == null {
@@ -148,23 +150,23 @@
         @if break == $direction {
           @include _break($screen) {
             background-image: url($_src-x2);
-            background-position: $_x $_y;
-            background-repeat: $_repeat;
-            background-size: $_size;
+            // background-position: $_x $_y;
+            // background-repeat: $_repeat;
+            // background-size: $_size;
           }
         } @else if over == $direction {
           @include _over($screen) {
             background-image: url($_src-x2);
-            background-position: $_x $_y;
-            background-repeat: $_repeat;
-            background-size: $_size;
+            // background-position: $_x $_y;
+            // background-repeat: $_repeat;
+            // background-size: $_size;
           }
         }
       } @else {
         background-image: url($_src-x2);
-        background-position: $_x $_y;
-        background-repeat: $_repeat;
-        background-size: $_size;
+        // background-position: $_x $_y;
+        // background-repeat: $_repeat;
+        // background-size: $_size;
       }
     }
   }
@@ -554,4 +556,29 @@
   @at-root html.edge & {
     @content;
   }
+}
+
+/// 縦書き
+@mixin tategaki () {
+  -webkit-writing-mode: vertical-rl;
+  -ms-writing-mode: tb-rl;
+  writing-mode: vertical-rl;
+  font-feature-settings: normal; // ずれたりする
+}
+
+/// アンチエイリアス有効
+@mixin font-smoothing () {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/// アンチエイリアス無効
+@mixin font-smoothing-n () {
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: auto;
+}
+
+/// otf対象のカーニング
+@mixin karning () {
+  font-feature-settings: "palt" 1;
 }

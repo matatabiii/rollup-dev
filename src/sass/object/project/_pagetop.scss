@@ -1,0 +1,13 @@
+@use "../../foundation/vars/variable" as *;
+@use "../../foundation/vars/functions" as *;
+@use "../../foundation/vars/mixins" as *;
+
+// https://github.com/dmnsgn/sass-easing/blob/master/_easings.scss
+@use "./../../../../node_modules/sass-easing/_easings.scss" as *;
+
+/*////////////////////////////
+
+@project/pagetop
+ページ上部に移動するボタン
+
+////////////////////////////*/

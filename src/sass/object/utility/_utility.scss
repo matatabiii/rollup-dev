@@ -46,6 +46,11 @@
 .u-feature-palt   { font-feature-settings: "palt" 1 !important; }
 .u-feature-normal { font-feature-settings: normal !important; }
 
+// cursor
+.u-pointer {cursor: pointer;}
+.u-not-allowed {cursor: not-allowed;}
+
+
 // color
 @each $key, $color in $color-map {
   .u-color-#{$key} { color: color($key) !important; }
@@ -107,6 +112,7 @@
   }
 
   // radius
+  .#{$prefix}u-radius { border-radius: 50% !important; }
   .#{$prefix}u-radius-less { border-radius: 0 !important; }
   @each $key, $radius in $radius-map {
     .#{$prefix}u-radius-#{$key} { border-radius: rem($radius) !important; }
@@ -161,15 +167,23 @@
   .#{$prefix}u-w-auto { width: auto !important; }
 
   // width full
+  .#{$prefix}u-w-harf { width: 50% !important; }
   .#{$prefix}u-w-full { width: 100% !important; }
 }
 
 @include _utility;
 
-@each $screen in $screen-list {
+@each $screen in $screen-list-min {
   $prefix: str-slice($screen, 0, 1);
   @include break($screen) {
     @include _utility("#{$prefix}\\:");
+
+    // font-size
+    @for $var from 10 through 20 {
+      .#{$prefix}\:u-size#{$var} {
+        font-size: rem($var) !important;
+      }
+    }
   }
   @include over($screen) {
     @include _utility("#{to-upper-case($prefix)}\\:");

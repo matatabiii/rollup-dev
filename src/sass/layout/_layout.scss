@@ -7,3 +7,61 @@
 @use '../foundation/vars/variable' as *;
 @use '../foundation/vars/functions' as *;
 @use '../foundation/vars/mixins' as *;
+
+html,
+body,
+.l-body,
+.l-wrapper,
+.l-container,
+.l-main,
+.l-side {
+  display: flex;
+}
+
+html,
+body,
+.l-body,
+.l-wrapper,
+.l-main,
+.l-side {
+  flex-direction: column;
+}
+
+html {
+  min-height: 100%;
+}
+
+body,
+.l-body,
+.l-wrapper,
+.l-container {
+  flex: 1 1 auto;
+}
+
+.l-header,
+.l-hero,
+.l-footer {
+  flex: 0 0 auto;
+}
+
+.l-main {
+  flex: 1 1 auto;
+}
+.l-side {
+  flex: 0 0 auto;
+}
+#side-inner {
+  position: sticky;
+  top: 0;
+}
+
+@include break('lg') {
+  .l-container {
+    flex-direction: column;
+  }
+}
+
+// z-index調整
+.l-drawer {
+  z-index: z-index("drawer");
+}

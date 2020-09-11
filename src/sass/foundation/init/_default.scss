@@ -12,21 +12,21 @@
 
 @include break(width('max')) {/**/}
 
-@include break(width('desktop')) {/**/}
+@include break(width('xl')) {/**/}
 
-@include break('tablet') {/**/}
+@include break('lg') {/**/}
 
-@include break('sp') {/**/}
+@include break('md') {/**/}
 
-@include break('xs') {/**/}
+@include break('sm') {/**/}
 
-@include over('xs') {/**/}
+@include over('sm') {/**/}
 
-@include over('sp') {/**/}
+@include over('md') {/**/}
 
-@include over('tablet') {/**/}
+@include over('lg') {/**/}
 
-@include over(width('desktop')) {/**/}
+@include over(width('xl')) {/**/}
 
 @include over(width('max')) {/**/}
 
@@ -53,20 +53,20 @@
 }
 
 html {
-  // font-size: 62.5%;
+  font-size: 62.5%;
   background-color: #fff;
 }
 
 body {
-  font-family: family("sans");
-  padding: $gutter;
-  box-sizing: border-box;
-  font-feature-settings: normal;
   font-weight: 400;
+  font-family: family("sans");
+  font-size: rem($font-size);
+  color: color('text');
+  box-sizing: border-box;
   -webkit-text-size-adjust: 100%;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-size: rem(16);
+  line-height: 1.75;
+  // @include karning();
+  @include font-smoothing();
 }
 
 // form parts

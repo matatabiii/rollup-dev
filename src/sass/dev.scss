@@ -1,0 +1,337 @@
+@charset 'utf-8';
+
+@use './foundation/vars/variable' as *;
+@use './foundation/vars/functions' as *;
+@use './foundation/vars/mixins' as *;
+
+// https://github.com/dmnsgn/sass-easing/blob/master/_easings.scss
+@use "./../../node_modules/sass-easing/_easings.scss" as *;
+
+// 本来ならば @use で一つ一つ読まなければならないが効率を優先し @import を使用
+
+// # Foundation
+@import './foundation/init/require';
+
+// # Layout
+@import './layout/**/_*.scss';
+
+// dev環境の警告
+#body {
+  padding: rem(60) rem(30) rem(30) rem(30);
+  &::before {
+    content: "開発テスト用スタイル（dev.css）が読み込まれています";
+    position: fixed;
+    top: 5px;
+    left: 5px;
+    width: calc(100% - 10px);
+    border-radius: radius('small');
+    background: color('danger');
+    z-index: z-index('debug');
+    color: color('white');
+    font-size: rem(16);
+    text-align: center;
+    padding: 8px;
+    font-weight: 700;
+  }
+}
+
+// header - wrapper
+.l-header {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: z-index("header");
+  padding: 24px 0;
+}
+
+// header - base
+.l-header-base {
+  width: 1140px;
+  margin: 0 auto;
+  height: height("header-desktop");
+  border-radius: radius("small");
+  background: color("sub");
+  max-width: calc(100% - 20px); // 左右10pxずつ
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  border: 2px solid color('gray');
+
+  // 背景の影
+  &::before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: radius("small");
+    box-shadow: 0px 5px 10px 0px rgba(68, 68, 68, 0.2);
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+  }
+
+  @include break("lg") {
+    // height: height("header-sp");
+    height: auto;
+  }
+
+  // .l-header-base__logo
+  > * {
+    flex: 0 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: rem(24);
+    padding: 10px 13px;
+    margin: auto;
+  }
+
+  // .l-header-base__nav
+  &__nav {
+    flex: 0 1 auto;
+    display: flex;
+    flex-direction: column;
+
+    @include over("lg") {
+      padding: 0 35px 0 15px;
+
+      .l-nav-base {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        justify-content: flex-end;
+      }
+    }
+  }
+}
+
+// nav - main
+.l-nav {
+  font-weight: 500;
+  display: flex;
+  font-size: rem(18);
+
+  @include break("lg") {
+    flex-wrap: wrap;
+  }
+
+  // .l-nav__col
+  &__col {
+    flex: 0 1 auto;
+  }
+
+  // .l-nav__link
+  &__link {
+    display: flex;
+    padding: 15px 13px;
+    position: relative;
+    z-index: 1;
+
+    @include over("lg") {
+      // カレント表示/メガドロップホバー時
+      &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        bottom: 0;
+        width: calc(100% - 26px);
+        height: 3px;
+        left: 50%;
+        transform: translate3d(-50%, 0, 0);
+        background: color("theme");
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.6s, visibility 0.6s;
+      }
+
+      @include action() {
+        &[href] {
+          &::before {
+            opacity: 1;
+            visibility: visible;
+          }
+        }
+      }
+    }
+  }
+}
+
+// メガドロップ内
+.l-nav-sub {
+  height: 200px;
+  border-radius: radius("small");
+  background: color("white");
+  box-shadow: 0px 5px 10px 0px rgba(68, 68, 68, 0.2);
+  border: 2px solid color("theme");
+}
+
+/// メガドロップの機能とは関係ないスタイル等を記述（機能は _logic.scss）
+// メガドロップ - ホバー対象
+[data-logic="megaDrop"] {
+  @include action {
+    @include over("lg") {
+      [data-logic="megaDrop-link"] {
+        &::after {
+          opacity: 1;
+          z-index: 2;
+          visibility: visible;
+          transform: translate3d(0, 0, 0);
+          pointer-events: none;
+        }
+
+        &::before {
+          opacity: 1;
+          visibility: visible;
+        }
+      }
+    }
+  }
+}
+
+// メガドロップ（JS連携）
+[data-logic="megaDrop-link"] {
+  @include over("lg") {
+    // メガドロップ矢印
+    // &::after {
+    //   content: "";
+    //   border-style: solid;
+    //   border-color: transparent;
+    //   border-width: 8px;
+    //   border-top-width: 0;
+    //   border-bottom-width: 10px;
+    //   border-bottom-color: color("theme");
+    //   position: absolute;
+    //   bottom: -20px;
+    //   left: 50%;
+    //   margin-left: -8px;
+
+    //   opacity: 0;
+    //   z-index: -100;
+    //   transform: translate3d(0, 0, 0);
+    //   transition: opacity 0.3s, visibility 0.3s, transform 0.3s, z-index 0s;
+    // }
+  }
+}
+
+// メガドロップ - 表示コンテンツ
+[data-logic="megaDrop-content"] {
+  padding-top: 20px;
+}
+
+.l-container {
+  background: color('white');
+  min-height: 100vh;
+  padding: 0 20px;
+  border: 1px dotted color('gray-200');
+}
+
+
+$action-easing: $easeInOutBack;
+
+.p-pagetop {
+  font-size: rem(18);
+  border-radius: 50%;
+  background: color("white");
+  width: em(50px, 18px);
+  height: em(50px, 18px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  position: fixed;
+  right: 40px;
+  bottom: 40px;
+  border: 2px solid color('text');
+  z-index: z-index("pagetop");
+  box-shadow: 0px 2px 5px 0px rgba(68, 68, 68, 0.07);
+  transition: color 0.45s ease-in-out, transform 0.45s $action-easing;
+
+  // ホバー補助
+  &::before {
+    content: "";
+    display: block;
+    width: 0; // calc(100% - 6px);
+    height: 0; // calc(100% - 6px);
+    position: absolute;
+    z-index: -1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    opacity: 0;
+    transform: translate3d(-50%, -50%, 0);
+    background: color("theme");
+    pointer-events: none;
+    transition: width 0.45s $action-easing, height 0.45s $action-easing, opacity 0.45s ease-in-out;
+  }
+
+  // ホバーアクション
+  @include action() {
+    color: color('white');
+    transform: translate3d(0, -3px, 0);
+
+    &::before {
+      width: calc(100% - 6px);
+      height: calc(100% - 6px);
+      opacity: 1;
+      transition: width 0.3s $action-easing, height 0.3s $action-easing, opacity 0.3s ease-in-out;
+    }
+  }
+}
+
+.l-main {
+  margin: 20px 0;
+  padding: 20px;
+  background: color('sub');
+  border: 2px solid color('gray');
+}
+
+.l-side {
+  margin: 20px 0 20px 20px;
+  padding: 20px;
+  width: 200px;
+  background: color('sub');
+  border: 2px solid color('gray');
+}
+
+#side-inner {
+  position: sticky;
+  top: 60px;
+}
+
+.l-hero {
+  padding: 20px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  background: color('sub');
+  border: 2px solid color('gray');
+  font-size: rem(30);
+  text-align: center;
+  line-height: 1.4;
+}
+
+.l-footer {
+  margin-top: 30px;
+  padding: 20px;
+  background: color('sub');
+  border: 2px solid color('gray');
+  text-align: center;
+  font-size: rem(18);
+}
+
+// # Object - Component
+@import './object/component/**/_*.scss';
+
+// # Object - Project
+@import './object/project/**/_*.scss';
+
+// # Support
+@import './support/**/_*.scss';
+
+// # Helper - Utility
+@import './object/utility/**/_*.scss';

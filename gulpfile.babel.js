@@ -31,6 +31,7 @@ import autoprefixer from 'autoprefixer'
 import mqpacker from 'css-mqpacker'
 import cssnano from 'cssnano'
 import postcssGapProperties from 'postcss-gap-properties'
+import postcss100vhFix from 'postcss-100vh-fix'
 
 import svgmin from 'gulp-svgmin'
 import svgstore from 'gulp-svgstore'
@@ -231,6 +232,7 @@ const sassDevelopment = async () => {
     .pipe(postcss([
       mqpacker(),
       postcssGapProperties(),
+      postcss100vhFix(),
       autoprefixer({
         grid: true
       })

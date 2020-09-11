@@ -1,0 +1,46 @@
+/*////////////////////////////
+
+@component/logic
+
+# 主にJSと連携するようなスタイル補助で使用
+[data-logic] でスタイルし、hoverで表示など機能的な表示でも使用
+
+- メガドロップナビ [data-logic="megaDrop"], [data-logic="megaDrop-trigger"], [data-logic="megaDrop-content"]
+- アコーディオン [data-logic="accordion"]
+- タブ  [data-logic="tab"]
+
+////////////////////////////*/
+// 【必須】variable, functions, mixins 読み込み
+@use '../../foundation/vars/variable' as *;
+@use '../../foundation/vars/functions' as *;
+@use '../../foundation/vars/mixins' as *;
+
+// https://github.com/dmnsgn/sass-easing/blob/master/_easings.scss
+@use "./../../../../node_modules/sass-easing/_easings.scss" as *;
+
+// メガドロップ - ホバー対象
+[data-logic="megaDrop"] {
+  @include action {
+    [data-logic="megaDrop-content"] {
+      opacity: 1;
+      z-index: 0;
+      visibility: visible;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+}
+
+// メガドロップ - 表示コンテンツ
+[data-logic="megaDrop-content"] {
+  overflow: hidden;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  left: 0;
+  transition: opacity 0.3s, visibility 0.3s, transform 0.3s, z-index 0s;
+
+  opacity: 0;
+  visibility: hidden;
+  z-index: -100;
+  transform: translate3d(0, -20px, 0);
+}

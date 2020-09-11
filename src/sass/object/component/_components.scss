@@ -22,12 +22,28 @@
 }
 
 // 要素幅で中央表示
-.c-center {
-  display: table;
-  margin-left: auto;
-  margin-right: auto;
-  border-collapse: separate;
+@mixin _c-center($prefix) {
+  .#{$prefix}c-center {
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: separate;
+  }
+};
+
+@include _c-center($prefix: "");
+
+@each $screen in $screen-list-min {
+  $prefix: str-slice($screen, 0, 1);
+  @include break($screen) {
+    @include _c-center("#{$prefix}\\:");
+  }
+  @include over($screen) {
+    @include _c-center("#{to-upper-case($prefix)}\\:");
+  }
 }
+
+
 
 // フェード
 .c-action-fade {
@@ -56,6 +72,7 @@
   vertical-align: -0.125em;
   text-indent: 0;
   flex: 0 0 auto;
+  font-weight: 400;
 }
 
 // クリアーフィックス
@@ -89,9 +106,7 @@
   }
 }
 
-/**
- * # アンダーライン付きリンクにする
- */
+// アンダーライン付きリンクにする
  .c-anchor {
   color: color("theme");
   text-decoration: underline;
@@ -103,4 +118,39 @@
   @include action {
     text-decoration: none;
   }
+}
+
+// object-fit
+.c-object-fit-box {
+  overflow: hidden;
+  position: relative;
+
+  // .c-object-fit-box--absolute
+  &--absolute {
+    position: absolute;
+  }
+
+  .c-object-fit-cover,
+  .c-object-fit-contain {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+}
+.c-object-fit-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  font-family: 'object-fit: cover;'; // デフォルトでポリフィルは入れてないが後から必要な場合用
+}
+.c-object-fit-contain {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  font-family: 'object-fit: contain;'; // デフォルトでポリフィルは入れてないが後から必要な場合用
 }

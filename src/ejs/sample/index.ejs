@@ -15,7 +15,7 @@ const data   = init({
   bodyClass  : 'sample-body', // body追加したいclass
   hero       : { // ヒーロー用
     parent   : 'EJS', // 親ページタイトル等
-    main     : 'サンプル', // メインタイトル 省略することで titile を継承する
+    main     : '内部ページレイアウトサンプル', // メインタイトル 省略することで titile を継承する
     sub      : 'sample', // 英字表記・サブタイトル等
     bgImage  : '' // 背景イメージファイル名（画像は assets/images/common/ に設置想定）
   }
@@ -31,28 +31,50 @@ _%>
 
 
 <%_ fvGet.components.main = function (__append) { _%>
-  <input type="button" value="ボタン">
-  <input type="checkbox" name="" id="" class="">
-  <input type="radio" name="" id="">
-  <input type="file" name="" id="">
-  <input type="reset" value="ああ">
-  <input type="range" name="レンジ" id="">
-  <input type="color" name="カラー" id="">
-  <button>ボタン</button>
-  <select name="" id="">
-    <option value="">ほげ</option>
-  </select>
-  <textarea name="" id="" cols="30" rows="10"></textarea>
+  <h2>メインコンテンツ</h2>
 
+  <div class="c-of-hidden">
+    <div class="c-container-just">
+      <ul class="c-flex c-flex--x5 c-flex--y5">
+        <li class="c-w-12 L:c-w-6">
+          <a
+            href="<%= fvGet.root %>"
+            class="p-btn p-btn--radius p-btn--h72 p-btn--text"
+          >
+            <i class="fas fa-hospital-alt p-btn__i c-mr5"></i>
+            <span class="p-btn__label u-700">トップへ</span>
+          </a>
+        </li>
 
-  <div class="c-container-just">
-    <ul class="c-flex-x5 c-flex-y5">
-      <li class="c-w-12 S:c-w-3 T:c-w-6">あ</li>
-      <li class="c-w-12 S:c-w-3 T:c-w-6">あ</li>
-      <li class="c-w-12 S:c-w-3 T:c-w-6">あ</li>
-      <li class="c-w-12 S:c-w-3 T:c-w-6">あ</li>
-      <li class="c-w-12 S:c-w-3 T:c-w-6">あ</li>
-    </ul>
+        <li class="c-w-12 L:c-w-6">
+          <a
+            href="<%= fvGet.root %>"
+            class="p-btn p-btn--radius p-btn--h72 p-btn--text"
+          >
+            <i class="fas fa-user-friends p-btn__i c-mr5"></i>
+            <span class="p-btn__label u-700">トップへ</span>
+          </a>
+        </li>
+
+        <li class="c-w-12 L:c-w-6">
+          <a
+            href="<%= fvGet.root %>"
+            class="p-btn p-btn--radius p-btn--h72"
+          >
+            <span class="p-btn__label u-700">トップへ</span>
+          </a>
+        </li>
+
+        <li class="c-w-12 L:c-w-6">
+          <a
+            href="<%= fvGet.root %>"
+            class="p-btn p-btn--radius p-btn--h72 p-btn--danger p-btn--o"
+          >
+            <span class="p-btn__label u-700">トップへ</span>
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 <%_ } _%>
 

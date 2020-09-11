@@ -14,7 +14,7 @@
 @use '../../foundation/vars/mixins' as *;
 
 // flexレイアウトラッパー
-[class*='c-flex'] {
+.c-flex {
   display: flex;
   flex-wrap: wrap;
 
@@ -25,17 +25,20 @@
     min-height: 1px;
     max-width: 100%;
   }
-}
 
-.c-flex-fit {
-  > * {
-    flex-direction: row;
+  // .c-flex--fit
+  &--fit {
+    > * {
+      flex-direction: row;
+    }
   }
 }
 
 @mixin _flex($prefix: '') {
   $flex-gutter: (
-    '1': 0,
+    '0': 0,
+    '1': rem(1px),
+    '1_': rem(1px * 0.5),
     '5': rem(5px),
     '5_': rem(5px * 0.5),
     '10': rem(10px),
@@ -51,26 +54,26 @@
     '45': rem(45px),
     '45_': rem(45px * 0.5),
     '50': rem(50px),
-    '55': rem(55px),
+    // '55': rem(55px),
     '55_': rem(55px * 0.5),
-    '60': rem(60px),
-    '65': rem(65px),
+    // '60': rem(60px),
+    // '65': rem(65px),
     '65_': rem(65px * 0.5),
-    '70': rem(70px),
-    '75': rem(75px),
+    // '70': rem(70px),
+    // '75': rem(75px),
     '75_': rem(75px * 0.5),
-    '80': rem(80px),
-    '85': rem(85px),
+    // '80': rem(80px),
+    // '85': rem(85px),
     '85_': rem(85px * 0.5),
-    '90': rem(90px),
-    '95': rem(95px),
+    // '90': rem(90px),
+    // '95': rem(95px),
     '95_': rem(95px * 0.5),
-    '100': rem(100px),
+    // '100': rem(100px),
   );
 
   @each $key, $val in $flex-gutter {
     // 左右
-    .#{$prefix}c-flex-x#{$key} {
+    .#{$prefix}c-flex--x#{$key} {
       margin-left: -$val;
       margin-right: -$val;
 
@@ -81,7 +84,7 @@
     }
 
     // 上下
-    .#{$prefix}c-flex-y#{$key} {
+    .#{$prefix}c-flex--y#{$key} {
       margin-top: -$val;
       margin-bottom: -$val;
 
@@ -144,14 +147,14 @@
 @include _flex('');
 @include _c-col('');
 
-@each $screen in $screen-list {
+@each $screen in $screen-list-min {
   $prefix: str-slice($screen, 0, 1);
   @include break($screen) {
     @include _flex('#{$prefix}\\:');
     @include _c-col('#{$prefix}\\:');
   }
   @include over($screen) {
-    @include _flex('#{$prefix}\\:');
+    @include _flex('#{to-upper-case($prefix)}\\:');
     @include _c-col('#{to-upper-case($prefix)}\\:');
   }
 }

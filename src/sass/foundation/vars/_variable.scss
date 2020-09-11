@@ -6,59 +6,80 @@
 @use "sass:map"; // sassの機能
 @use "./family";
 
+/// カラー取得（スコープ）
+/// 取得できなかったら currentColor を返す
+/// @param  {string}  $key キー名
+/// @param  {boolean} $var CSSカスタム変数にするか
+/// @return {string}       カラーコード
+@function _color($key: null, $var: true) {
+  @if map == type-of($color-map) and map.get($color-map, $key) {
+    $color: map.get($color-map, $key);
+    @if $var {
+      @return var(--color-#{$key}, $color);
+    } @else {
+      @return $color;
+    }
+  }
+  @return currentColor;
+}
+
 $text-decoration-static: none !default;
 $text-decoration-dynamic: underline !default;
 
-$font-size: 16px !default;
+$font-size: 15px !default;
 
 $gutter: 20px !default;
 
 // レスポンシブ変化のスクリーンのリスト (実数は $width-map にマッチする値を使用する)
-$screen-list: ("tablet", "sp", "xs") !default;
+$screen-list: ("xl", "lg", "md", "sm") !default;
+$screen-list-min: ("lg", "md", "sm") !default;
 
 // @Function width("desktop")
 $width-map: (
-  "max": 1340px,
-  "container": 1140px,
-  "large": 970px,
+  "max": 1366px,
+  "container": 1170px,
+  "large": 1030px,
   "medium": 770px,
   "small": 570px,
   "main": 750px,
   "sub": 330px,
-  "desktop": 1280px,
-  "tablet": 1024px,
-  "sp": 768px,
-  "xs": 375px,
+  "xl": 1200px,
+  "lg": 992px,
+  "md": 768px,
+  "sm": 576px,
 ) !default;
 
 // @Function height("header-desktop")
 $height-map: (
-  "header-desktop": 120px,
+  "header-desktop": auto,
   "header-sp": 80px,
 ) !default;
 
 // @Function family("sans")
 // @Utility  .u-family-sans
 $family-map: (
-  "sans": map.get(family.$families, 'noto'),
-  "system": map.get(family.$families, 'system'),
+  "sans": map.get(family.$families, "system"),
+  "lato": map.get(family.$families, "lato"),
 ) !default;
 
-// @Function color("header")
+// @Function color("theme")
 // @Utility  .u-text-font
 //           .u-bg-font
 $color-map: (
   "transparent": transparent,
   "black": #000,
   "white": #fff,
+  "gray": #ccc,
   "gray-100": #f5f5f5,
   "gray-110": #efeeec,
   "gray-200": #8c8c8c,
   "gray-300": #707070,
   "gray-400": #3f3f3f,
-  "theme": #97cf36,
-  "sub": #684d17,
-  "text": #333,
+  "theme": #c0b51d,
+  "sub": #ddf4f7,
+  "text": #444,
+  "bg-beige": #f0ede0,
+  "bg-white-fa": #fafafa,
   "success": #28a745,
   "danger": #dc3545,
   "warning": #ffc107,
@@ -82,13 +103,13 @@ $margin-map: (
 // @Function radius("small")
 // @Utility  .u-radius-small
 $radius-map: (
-  "small": 5px,
+  "small": 6px,
   "medium": 8px,
   "large": 12px,
 ) !default;
 
 // @Function z-index("header")
-$index-list: ("nav", "content", "header", "drawer", "loading", "debug") !default;
+$index-list: ("nav", "content", "pagetop", "header", "drawer", "loading", "debug") !default;
 
 // @Function space("50")
 $space-map: (
@@ -112,4 +133,30 @@ $space-map: (
   "90": 90,
   "95": 95,
   "100": 100,
+) !default;
+
+// ボタンの横幅サイズリスト
+$btn-width-map: (
+  "100": 100,
+  "130": 130,
+  "230": 230,
+) !default;
+
+// ボタンの高さサイズリスト
+$btn-height-map: (
+  "36": 36,
+  "72": 72,
+) !default;
+
+// ボタンの色
+$btn-color-map: (
+  "transparent": _color("transparent"),
+  "black": _color("black"),
+  "white": _color("white"),
+  "theme": _color("theme"),
+  "sub": _color("sub"),
+  "text": _color("text"),
+  "success": _color("success"),
+  "danger": _color("danger"),
+  "warning": _color("warning"),
 ) !default;

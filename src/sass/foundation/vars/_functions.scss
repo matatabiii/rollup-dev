@@ -26,7 +26,8 @@
 /// `rem` に変換
 /// @param {number} $calc 計算するサイズ
 @function rem($calc) {
-  $rem: (strip-unit($calc / 10) * 0.625) * 1rem;
+  // $rem: (strip-unit($calc / 10) * 0.625) * 1rem;
+  $rem: (strip-unit($calc / 10)) * 1rem;
   @return $rem;
 }
 
@@ -60,7 +61,7 @@
 /// @param  {string} $chain-before 連鎖させる値(前)
 /// @param  {string} $chain-after  連鎖させる値(後)
 /// @return {string}               値
-@function text-outline($width: 1px, $color: _color("font"), $chain-before: null, $chain-after: null) {
+@function text-outline($width: 1px, $color: color("font"), $chain-before: null, $chain-after: null) {
   @return $chain-before, 0 * $width -1 * $width 0 $color, 0.33 * $width -0.99 * $width 0 $color,
     0.66 * $width -0.66 * $width 0 $color, 0.99 * $width -0.33 * $width 0 $color, 1 * $width 0 * $width 0 $color,
     0.99 * $width 0.33 * $width 0 $color, 0.66 * $width 0.66 * $width 0 $color, 0.33 * $width 0.99 * $width 0 $color,
@@ -167,6 +168,14 @@
     @return 100 + index($index-list, $key);
   }
   @return 0;
+}
+
+/// パーセント計算
+/// @param  string $av 求める値 ( 単位必須 )
+/// @param  string $rv 参照値 ( 単位必須 )
+/// @return string     割合 ( % )
+@function percent( $av, $rv ) {
+  @return ( $av / $rv ) * 100%;
 }
 
 /// base64処理（参考: http://ithat.me/2016/11/20/sass-scss-function-svg-base64-encode）

@@ -11,7 +11,7 @@ const data   = init({
   pageType   : '', // ページタイプを判断（ default: page | single ）
   file       : '', // カノニカルurl等に使用、htmlとしてレンダリングされた場合のルートからの実際ファイル名（index等は省略）
   titleTag   : '', // titleを設定すると勝手にタイトルタグを作りますが、それを上書きする場合はこちらに
-  ogType     : 'website', // og:type（default:）
+  ogType     : 'website', // og:type（default:article）
   bodyClass  : '', // body追加したいclass
   hero       : { // ヒーロー用
     parent   : '', // 親ページタイトル等
@@ -29,20 +29,65 @@ const data   = init({
 const fvGet = data.get(data)
 _%>
 
-<%_ fvGet.components.main = function (__append) { _%>
-<ul class="">
-  <li>リスト</li>
-</ul>
+<%_　// メインコンテンツ
+fvGet.components.main = function (__append) { _%>
+  <h2>メインコンテンツ</h2>
 
-<button class="">ぼたん</button>
-<button>ぼたん</button>
+  <div class="c-of-hidden c-mb30">
+    <div class="c-container-just">
+      <ul class="c-flex c-flex--x1">
+        <li>
+          <a
+            href="<%= fvGet.root %>sample/"
+            class="p-btn p-btn--radius p-btn--w130 p-btn--h36 p-btn--text"
+          >
+            <i class="fas fa-hospital-alt p-btn__i c-mr5"></i>
+            <span class="p-btn__label u-700">サンプル</span>
+          </a>
+        </li>
 
-<p>
-  あ<sub>き</sub>いうえお<sup>か</sup>
+        <li>
+          <a
+            href="<%= fvGet.root %>sample/"
+            class="p-btn p-btn--radius p-btn--w130 p-btn--h36 p-btn--text"
+          >
+            <i class="fas fa-user-friends p-btn__i c-mr5"></i>
+            <span class="p-btn__label u-700">サンプル</span>
+          </a>
+        </li>
 
-  <a href="" class="">ほげ</a>
-</p>
+        <li>
+          <a
+            href="<%= fvGet.root %>sample/"
+            class="p-btn p-btn--radius p-btn--w130 p-btn--h36"
+          >
+            <span class="p-btn__label u-700">サンプル</span>
+          </a>
+        </li>
 
+        <li>
+          <a
+            href="<%= fvGet.root %>sample/"
+            class="p-btn p-btn--radius p-btn--w130 p-btn--h36 p-btn--danger p-btn--o"
+          >
+            <span class="p-btn__label u-700">サンプル</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>【TODO - 2020.09.11時点】</h2>
+  <ul>
+    <li>カレントナビステータス管理（JS）</li>
+    <li>ドロワーロジック（JS・CSS）</li>
+    <li>カルーセルスライダーロジック（JS・CSS）</li>
+    <li>フェードスライダーロジック（JS）</li>
+    <li>ギャラリースライドロジック（横にループするやつ）（JS・CSS）</li>
+    <li>アコーディオンーロジック（JS・CSS）</li>
+    <li>タブロジック（JS・CSS）</li>
+    <li>スムーススクロール（JS）</li>
+  </ul>
 <%_ } _%>
 
 <%_

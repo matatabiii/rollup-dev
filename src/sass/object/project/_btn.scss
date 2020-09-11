@@ -1,0 +1,200 @@
+@use "../../foundation/vars/variable" as *;
+@use "../../foundation/vars/functions" as *;
+@use "../../foundation/vars/mixins" as *;
+
+// https://github.com/dmnsgn/sass-easing/blob/master/_easings.scss
+@use "./../../../../node_modules/sass-easing/_easings.scss" as *;
+
+/*////////////////////////////
+
+@project/btn
+ボタン
+
+easing:
+
+$linear         : cubic-bezier(0.250, 0.250, 0.750, 0.750);
+$ease           : cubic-bezier(0.250, 0.100, 0.250, 1.000);
+$ease-in        : cubic-bezier(0.420, 0.000, 1.000, 1.000);
+$ease-out       : cubic-bezier(0.000, 0.000, 0.580, 1.000);
+$ease-in-out    : cubic-bezier(0.420, 0.000, 0.580, 1.000);
+
+$easeInQuad     : cubic-bezier(0.550, 0.085, 0.680, 0.530);
+$easeInCubic    : cubic-bezier(0.550, 0.055, 0.675, 0.190);
+$easeInQuart    : cubic-bezier(0.895, 0.030, 0.685, 0.220);
+$easeInQuint    : cubic-bezier(0.755, 0.050, 0.855, 0.060);
+$easeInSine     : cubic-bezier(0.470, 0.000, 0.745, 0.715);
+$easeInExpo     : cubic-bezier(0.950, 0.050, 0.795, 0.035);
+$easeInCirc     : cubic-bezier(0.600, 0.040, 0.980, 0.335);
+$easeInBack     : cubic-bezier(0.600, -0.280, 0.735, 0.045);
+
+$easeOutQuad    : cubic-bezier(0.250, 0.460, 0.450, 0.940);
+$easeOutCubic   : cubic-bezier(0.215, 0.610, 0.355, 1.000);
+$easeOutQuart   : cubic-bezier(0.165, 0.840, 0.440, 1.000);
+$easeOutQuint   : cubic-bezier(0.230, 1.000, 0.320, 1.000);
+$easeOutSine    : cubic-bezier(0.390, 0.575, 0.565, 1.000);
+$easeOutExpo    : cubic-bezier(0.190, 1.000, 0.220, 1.000);
+$easeOutCirc    : cubic-bezier(0.075, 0.820, 0.165, 1.000);
+$easeOutBack    : cubic-bezier(0.175, 0.885, 0.320, 1.275);
+
+$easeInOutQuad  : cubic-bezier(0.455, 0.030, 0.515, 0.955);
+$easeInOutCubic : cubic-bezier(0.645, 0.045, 0.355, 1.000);
+$easeInOutQuart : cubic-bezier(0.770, 0.000, 0.175, 1.000);
+$easeInOutQuint : cubic-bezier(0.860, 0.000, 0.070, 1.000);
+$easeInOutSine  : cubic-bezier(0.445, 0.050, 0.550, 0.950);
+$easeInOutExpo  : cubic-bezier(1.000, 0.000, 0.000, 1.000);
+$easeInOutCirc  : cubic-bezier(0.785, 0.135, 0.150, 0.860);
+$easeInOutBack  : cubic-bezier(0.680, -0.550, 0.265, 1.550);
+
+////////////////////////////*/
+
+$color-text: color("white");
+$action-easing: $easeOutQuad;
+$val-radius: radius("small"); // 角丸
+$val-circle: rem(200); // 丸
+
+.p-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.25;
+  position: relative;
+  z-index: 1;
+  padding: rem(5);
+  overflow: hidden;
+  border-radius: 0;
+  background: currentColor;
+
+  // .p-btn__i
+  &__i {
+    color: $color-text;
+    transition: color 0.45s $action-easing;
+  }
+
+  // ラベル .p-btn__label
+  &__label {
+    flex: 0 1 auto;
+    padding: 0 8px;
+    color: $color-text;
+    transition: color 0.45s $action-easing;
+  }
+
+  // 横幅
+  max-width: 100%;
+  width: 100%;
+  @each $key, $val in $btn-width-map {
+    &--w#{$key} {
+      width: rem($val);
+    }
+  }
+
+  // 高さ
+  &--h {
+    height: auto;
+  }
+  @each $key, $val in $btn-height-map {
+    &--h#{$key} {
+      height: rem($val);
+    }
+  }
+
+  // 色
+  color: color("theme");
+  @each $key, $val in $btn-color-map {
+    &--#{$key} {
+      color: $val;
+    }
+  }
+
+  // 角丸 .p-btn--radius
+  &--radius {
+    border-radius: $val-radius;
+
+    // ホバー補助
+    &::before {
+      border-radius: $val-radius - 2;
+    }
+  }
+
+  // 丸 .p-btn--circle
+  &--circle {
+    border-radius: $val-circle;
+
+    // ホバー補助
+    &::before {
+      border-radius: $val-circle;
+    }
+  }
+
+  // ホバー補助
+  &::before {
+    content: "";
+    display: block;
+    width: calc(100% - 6px);
+    height: calc(100% - 6px);
+    position: absolute;
+    z-index: -1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    opacity: 0;
+    transform: translate3d(-50%, -50%, 0);
+    background: #fff;
+    pointer-events: none;
+    transition: width 0.45s $action-easing, opacity 0.45s ease-in-out;
+  }
+
+  // 枠線 .p-btn--o
+  &--o {
+    .p-btn__label,
+    .p-btn__i {
+      color: currentColor;
+    }
+
+    &::before {
+      opacity: 1;
+      width: calc(100% - 6px);
+    }
+  }
+
+  // disabled
+  &[disabled] {
+    background: rgba($color: #d8d8d8, $alpha: 1)
+  }
+
+  // ホバーアクション
+  @include action() {
+    &[href],
+    &[type="submit"],
+    &[type="button"] {
+      text-decoration: none;
+
+      &:not([disabled]) {
+        .p-btn__label,
+        .p-btn__i {
+          color: currentColor;
+          transition: color 0.3s $action-easing;
+        }
+
+        &::before {
+          opacity: 1;
+          transition: width 0.3s $action-easing, opacity 0.3s ease-in-out;
+        }
+
+        // 枠線ver
+        &.p-btn--o {
+          .p-btn__label,
+          .p-btn__i {
+            color: $color-text;
+          }
+
+          &::before {
+            // width: 0;
+            opacity: 0;
+          }
+        }
+      }
+    }
+  }
+}

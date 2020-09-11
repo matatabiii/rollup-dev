@@ -2,6 +2,33 @@
   components: ヘッダー
   グローバルに fvGet が使えます
 %>
-<header id="header-main">
-  ヘッダー
+<header id="header-base" class="l-header-base c-lh1.4">
+  <<%= fvGet.tags.h1Home %>>
+    <a href="<%= fvGet.root %>" class="">
+      ヘッダー（<%= fvGet.tags.h1Home %>）
+    </a>
+  </<%= fvGet.tags.h1Home %>>
+
+  <div class="l-header-base__nav">
+    <nav class="l-nav-base" id="nav" data-component="nav">
+      <ul class="l-nav L:u-justify-end">
+        <li class="l-nav__col" data-logic="megaDrop">
+          <a href="<%= fvGet.root %>" class="l-nav__link" data-logic="megaDrop-link">メガドロップ</a>
+
+          <div data-logic="megaDrop-content">
+            <div class="l-nav-sub">
+              <div class="l-nav-sub__inner">
+                サブ
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="l-nav__col"><a href="<%= fvGet.root %>sample/" class="l-nav__link">メニューA</a></li>
+        <li class="l-nav__col"><a href="<%= fvGet.root %>sample/" class="l-nav__link">メニューB</a></li>
+        <li class="l-nav__col"><a href="<%= fvGet.root %>sample/" class="l-nav__link">メニューC</a></li>
+        <li class="l-nav__col"><a href="<%= fvGet.root %>sample/" class="l-nav__link">メニューD</a></li>
+      </ul>
+    </nav>
+  </div>
 </header>
